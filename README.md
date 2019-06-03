@@ -10,3 +10,6 @@ TO-DO
 * 지혜 : main activity layout : recyclerview / 하단 버튼
 * ID 검색으로 친구 추가
 * 동영상은 무조건 new intent로
+* timeline 10초에 한번씩 자동 refresh
+* timeline 20개까지, 쿼리를 order by desc로 해서 상위 20개만 해서 리스트로 만들기
+*

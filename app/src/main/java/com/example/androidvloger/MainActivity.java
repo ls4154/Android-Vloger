@@ -30,12 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        adapter = new TimelineAdapter(new ArrayList<TimelineAdapter.ThumbItem>());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
 
         //vv = findViewById(R.id.vv1);
         //MediaController controller = new MediaController(this);
@@ -72,10 +67,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        /*
         if (userId == null) { // 로그인 되어 있지 않으면
-            Intent intent = new Intent(getBaseContext(), SignupActivity.class); //
+            Intent intent = new Intent(getBaseContext(), SignupActivity.class);
             startActivityForResult(intent, 1111);
-        }
+        }*/
     }
 
     public void initPlayer() {
@@ -87,5 +83,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void stopPlayer() {
         vv.stopPlayback();
+    }
+
+    void refreshTimeline(){
+        // TODO
+        // new TimelineAdapter에 들어가는 데이터 데베에서 받아온걸로 바꿔야함
+        adapter = new TimelineAdapter(new ArrayList<TimelineAdapter.ThumbItem>());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
     }
 }
