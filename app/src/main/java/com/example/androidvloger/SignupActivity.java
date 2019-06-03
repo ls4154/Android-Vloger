@@ -53,11 +53,39 @@ public class SignupActivity extends AppCompatActivity {
             String strPw2 = etPw2.getText().toString();
             String strDesc = etDesc.getText().toString();
 
-            if (!strPw.equals(strPw2)) {
+            // 이하는 sign up form이 valid한지 체크하는 코드
+            if (!strPw.equals(strPw2)) { // 패스워드가 일치하지 않을때
                 Toast.makeText(getApplicationContext(), "Password not match!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            
+            if(!strId.matches("[a-zA-Z0-9]+")){ // id가 영어 숫자로만 이뤄져 있지 않을때
+                Toast.makeText(getApplicationContext(), "Use only letter or number for ID!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(!strPw.matches("[a-zA-Z0-9]+")){ // pw가 영어 숫자로만 이뤄져 있지 않을때
+                Toast.makeText(getApplicationContext(), "Use only letter or number for PW!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(!strPw.matches("[a-zA-Z0-9]+")){ // name이 영어 숫자로만 이뤄져 있지 않을때
+                Toast.makeText(getApplicationContext(), "Use only letter or number for Name!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(strId.length() > 20){ // id 길이가 20자 초과할때
+                Toast.makeText(getApplicationContext(), "Modify ID length <= 20", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(strPw.length() > 20 || strPw.length() < 4){ // pw 길이가 20자 초과 or 4자 미만일때
+                Toast.makeText(getApplicationContext(), "Modify 4 <= PW length <= 20", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(strName.length() > 20){ // name 길이가 20자 초과 or 4자 미만일때
+                Toast.makeText(getApplicationContext(), "Modify Name length <= 20", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(strDesc.length() > 75){ // desc 길이가 80자 초과
+                Toast.makeText(getApplicationContext(), "Modify Description length <= 75", Toast.LENGTH_SHORT).show();
+                return;
+            }
             SendData task = new SendData();
             task.execute("http://" + IP_ADDR + "/insert2.php", strId, strName, strPw, strDesc);
         }

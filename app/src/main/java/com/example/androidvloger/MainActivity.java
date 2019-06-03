@@ -3,9 +3,15 @@ package com.example.androidvloger;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
+import android.widget.Adapter;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,10 +21,21 @@ public class MainActivity extends AppCompatActivity {
     
     String userId;
 
+    RecyclerView recyclerView;
+    TimelineAdapter adapter;
+
+    final static int SIGNUP_RC = 1111; // sign up request code
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        adapter = new TimelineAdapter(new ArrayList<TimelineAdapter.ThumbItem>());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
 
         //vv = findViewById(R.id.vv1);
         //MediaController controller = new MediaController(this);
@@ -55,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (userId == null) {
-            Intent intent = new Intent(getBaseContext(), SignupActivity.class);
+        if (userId == null) { // 로그인 되어 있지 않으면
+            Intent intent = new Intent(getBaseContext(), SignupActivity.class); //
             startActivityForResult(intent, 1111);
         }
     }
