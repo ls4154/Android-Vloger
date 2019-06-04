@@ -12,4 +12,4 @@ TO-DO
 * 동영상은 무조건 new intent로
 * timeline 10초에 한번씩 자동 refresh
 * timeline 20개까지, 쿼리를 order by desc로 해서 상위 20개만 해서 리스트로 만들기
-*
+* 버튼 세개  타임라인 업로드 노티? 타임라인에서는 타임라인 버튼 누르면 제일 위로 가게 하면 되겠네
