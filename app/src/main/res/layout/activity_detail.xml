@@ -7,55 +7,63 @@
     tools:context=".DetailActivity">
 
     <ImageView
-        android:id="@+id/imgHeart"
+        android:id="@+id/imgBack"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:elevation="0.03dp"
-        android:src="@drawable/ic_heart_empty"
-        app:layout_constraintBottom_toBottomOf="@id/imgBack"
-        app:layout_constraintEnd_toEndOf="@id/imgBack"
-        app:layout_constraintHeight_percent="0.1"
-        app:layout_constraintStart_toStartOf="@id/imgBack"
-        app:layout_constraintTop_toTopOf="@id/imgBack" />
+        android:background="#000000"
+        app:layout_constraintDimensionRatio="2:1"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:elevation="0.02dp"
-        android:elevationShadowColor="#00ffffff"
-        android:id="@+id/imgPlay"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:srcCompat="@drawable/ic_play"
-        app:layout_constraintWidth_percent="0.3"
-        app:layout_constraintBottom_toBottomOf="@id/imgBack"
-        app:layout_constraintEnd_toEndOf="@id/imgBack"
-        app:layout_constraintStart_toStartOf="@id/imgBack"
-        app:layout_constraintTop_toTopOf="@id/imgBack"
-        />
 
     <ImageView
         android:id="@+id/imgThumbnail"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintWidth_percent="0.5"
-        app:layout_constraintVertical_bias="0"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/imgBack"
+        app:layout_constraintTop_toTopOf="@id/imgBack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:elevation="0.01dp"
         android:background="@color/colorAccent"
-
         />
 
     <ImageView
-        android:id="@+id/imgBack"
+        android:id="@+id/imgHeart"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#000000"
-        app:layout_constraintBottom_toBottomOf="@id/imgThumbnail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/imgThumbnail" />
+        android:src="@drawable/ic_heart_empty"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintBottom_toBottomOf="@id/imgBack"
+        app:layout_constraintEnd_toEndOf="@id/imgBack"
+        app:layout_constraintStart_toStartOf="@id/imgBack"
+        app:layout_constraintTop_toTopOf="@id/imgBack" />
+
+    <ImageView
+        android:id="@+id/imgPlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:srcCompat="@drawable/ic_play"
+        app:layout_constraintWidth_percent="0.2"
+        app:layout_constraintBottom_toBottomOf="@id/imgBack"
+        app:layout_constraintEnd_toEndOf="@id/imgBack"
+        app:layout_constraintStart_toStartOf="@id/imgBack"
+        app:layout_constraintTop_toTopOf="@id/imgBack"
+        />
+
+    <TextView
+        android:id="@+id/tvTop"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/imgBack"
+        app:layout_constraintEnd_toEndOf="@id/imgBack"
+        app:layout_constraintStart_toStartOf="@id/imgBack"
+        app:layout_constraintTop_toTopOf="@id/imgBack"
+        />
 
     <TextView
         android:id="@+id/tvUsername"
