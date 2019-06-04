@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailActivity">
+
+    <ImageView
+        android:id="@+id/imgHeart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="0.03dp"
+        android:src="@drawable/ic_heart_empty"
+        app:layout_constraintBottom_toBottomOf="@id/imgBack"
+        app:layout_constraintEnd_toEndOf="@id/imgBack"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="@id/imgBack"
+        app:layout_constraintTop_toTopOf="@id/imgBack" />
+
+    <ImageView
+        android:elevation="0.02dp"
+        android:elevationShadowColor="#00ffffff"
+        android:id="@+id/imgPlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:srcCompat="@drawable/ic_play"
+        app:layout_constraintWidth_percent="0.3"
+        app:layout_constraintBottom_toBottomOf="@id/imgBack"
+        app:layout_constraintEnd_toEndOf="@id/imgBack"
+        app:layout_constraintStart_toStartOf="@id/imgBack"
+        app:layout_constraintTop_toTopOf="@id/imgBack"
+        />
+
+    <ImageView
+        android:id="@+id/imgThumbnail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintWidth_percent="0.5"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="0.01dp"
+        android:background="@color/colorAccent"
+
+        />
+
+    <ImageView
+        android:id="@+id/imgBack"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#000000"
+        app:layout_constraintBottom_toBottomOf="@id/imgThumbnail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/imgThumbnail" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center_vertical"
+        android:maxLength="20"
+
+        android:maxLines="1"
+        android:padding="5dp"
+        android:text="UserNameUserNameUser"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/tvDesc"
+        app:layout_constraintEnd_toStartOf="@id/tvUploadtime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgThumbnail" />
+
+    <TextView
+        android:id="@+id/tvUploadtime"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fontFamily="sans-serif-light"
+        android:padding="5dp"
+
+        android:gravity="center_vertical|end"
+        android:text="YYYY-MM-DD HH:MM"
+        app:layout_constraintBottom_toTopOf="@id/tvDesc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvUsername"
+        app:layout_constraintTop_toBottomOf="@id/imgThumbnail" />
+
+    <TextView
+        android:id="@+id/tvDesc"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fontFamily="sans-serif-condensed"
+        android:maxLines="2"
+        android:paddingStart="5dp"
+
+        android:paddingEnd="5dp"
+        android:text="DescribeDescribeDescribeDribeDescribeDeibeDribeDescribeDeibeDribeDescribeDescribeDescribeDescribeDescribeDescribeDescribeDescribeDescribe"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvUsername" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintTop_toBottomOf="@id/tvDesc"
+        app:layout_constraintBottom_toTopOf="@id/etComment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/etComment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimaryDark"
+        android:ems="10"
+
+        android:fontFamily="sans-serif-condensed"
+        android:hint="Comment Here"
+        android:inputType="textPersonName"
+        android:padding="5dp"
+
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView" />
+
+</android.support.constraint.ConstraintLayout>
