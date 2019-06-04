@@ -66,24 +66,24 @@ public class SignupActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Use only letter or number for PW!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(!strPw.matches("[a-zA-Z0-9]+")){ // name이 영어 숫자로만 이뤄져 있지 않을때
+            if(!strName.matches("[a-zA-Z0-9]+")){ // name이 영어 숫자로만 이뤄져 있지 않을때
                 Toast.makeText(getApplicationContext(), "Use only letter or number for Name!", Toast.LENGTH_SHORT).show();
                 return;
             }
             if(strId.length() > 20){ // id 길이가 20자 초과할때
-                Toast.makeText(getApplicationContext(), "Modify ID length <= 20", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "ID should be less than 20 chars", Toast.LENGTH_SHORT).show();
                 return;
             }
             if(strPw.length() > 20 || strPw.length() < 4){ // pw 길이가 20자 초과 or 4자 미만일때
-                Toast.makeText(getApplicationContext(), "Modify 4 <= PW length <= 20", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Password should be less than 20 chars", Toast.LENGTH_SHORT).show();
                 return;
             }
             if(strName.length() > 20){ // name 길이가 20자 초과 or 4자 미만일때
-                Toast.makeText(getApplicationContext(), "Modify Name length <= 20", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Name should be less than 20 chars", Toast.LENGTH_SHORT).show();
                 return;
             }
             if(strDesc.length() > 75){ // desc 길이가 80자 초과
-                Toast.makeText(getApplicationContext(), "Modify Description length <= 75", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Description should be less than 75 chars", Toast.LENGTH_SHORT).show();
                 return;
             }
             SendData task = new SendData();
