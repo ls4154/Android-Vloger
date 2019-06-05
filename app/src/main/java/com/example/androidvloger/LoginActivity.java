@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +20,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
+    final static int SIGNUP_RC = 1111;
+    
     final String IP_ADDR = "13.124.45.74";
     EditText etId;
     EditText etPw;
@@ -38,6 +42,22 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Login");
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_login_signup) {
+            Intent intent = new Intent(getBaseContext(), SignupActivity.class);
+            startActivityForResult(intent, SIGNUP_RC);
+            return true;
+        }
+        
+        return super.onOptionsItemSelected(item);
+    }
 
     Button.OnClickListener loginSendListner = new View.OnClickListener() {
         @Override
