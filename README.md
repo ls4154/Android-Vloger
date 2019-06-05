@@ -18,4 +18,3 @@ TO-DO
 * detail view에도 title 넣기
 * 툴바 기능 고민(친구추가, 로그아웃, 마이페이지)
 * 팔로우/팔로워 눌렀을 때 목록 볼 수 있게 할까요?
-* notification layout
