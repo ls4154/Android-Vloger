@@ -11,26 +11,31 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="나는선플러^^"
-        android:textSize="18sp"
+        android:text="곰돌이"
+        android:textSize="20sp"
         android:padding="5dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/tvComment"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/buttonFollow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvComment"
+    <Button
+        android:id="@+id/buttonFollow"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:text="와 정말 대단한 동영상이에요 최고 최고 정말 마음에 들어요 혹시 님 천재 대박이에요"
-        android:textSize="18sp"
-        android:padding="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        android:background="@color/colorAccent"
+        android:text="FOLLOW"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toTopOf="@id/tvUsername"
+        app:layout_constraintBottom_toBottomOf="@id/tvUsername"
+        app:layout_constraintStart_toEndOf="@id/tvUsername"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvUsername" />
+        />
 
 </android.support.constraint.ConstraintLayout>
