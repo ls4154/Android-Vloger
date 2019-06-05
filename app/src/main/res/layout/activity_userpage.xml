@@ -95,6 +95,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.65"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
         >
     </android.support.v7.widget.RecyclerView>
 

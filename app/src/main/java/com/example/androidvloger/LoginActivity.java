@@ -92,11 +92,15 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "ID should be less than 20 chars", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(strPw.length() > 20 || strPw.length() < 4){ // pw 길이가 20자 초과 or 4자 미만일때
+            if(strPw.length() > 20){ // pw 길이가 20자 초과 or 4자 미만일때
                 Toast.makeText(getApplicationContext(), "Password should be less than 20 chars", Toast.LENGTH_SHORT).show();
                 return;
             }
-            
+            if(strPw.length() < 4){
+                Toast.makeText(getApplicationContext(), "Password should be longer than 4 chars", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             LoginActivity.SendData task = new LoginActivity.SendData();
             task.execute("http://" + IP_ADDR + "/login.php", strId, strPw);
         }

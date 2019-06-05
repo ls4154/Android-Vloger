@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -16,15 +20,22 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class UserlistActivity extends AppCompatActivity {
     final String IP_ADDR = "13.124.45.74";
+    ArrayList<Pair<String, String>> userList;
+    EditText etSearch;
+    RecyclerView recyclerView;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userlist);
-        
+
+        etSearch = (EditText) findViewById(R.id.etSearch);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
         GetData getData = new GetData();
         getData.execute("http://" + IP_ADDR + "/getuser.php");
     }
@@ -75,19 +86,28 @@ public class UserlistActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            userList = new ArrayList<>();
             Toast.makeText(getApplicationContext(), "Done", Toast.LENGTH_LONG).show();
             try {
                 JSONObject jo = new JSONObject(s);
                 JSONArray ja = jo.getJSONArray("users");
                 for (int i = 0; i < ja.length(); i++) {
-                    ja.getJSONObject(i).getJSONObject("id");
-                    ja.getJSONObject(i).getJSONObject("name");
+                    String t1 = ja.getJSONObject(i).getString("id");
+                    String t2 = ja.getJSONObject(i).getString("name");
+                    Pair<String, String> tempPair = new Pair<>(t1, t2);
+                    userList.add(tempPair);
                 }
             } catch (Exception e) {
                 Log.d("JSON Parser", "Error");
-            }                
-
+            }
         }
     } // Asynctask
-    
+
+    void search(View view){ // xml에 buttonSearch onclick으로 돼있음
+        String keyword = etSearch.getText().toString();
+    }
+
+    void refresh(){
+
+    }
 }
