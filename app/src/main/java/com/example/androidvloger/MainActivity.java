@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Adapter;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     final static int SIGNUP_RC = 1111; // sign up request code
     final static int LOGIN_RC = 1112; // sign up request code
+    final static int SEARCH_RC = 1113; // sign up request code
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         //stopPlayer();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_main_search) {
+            Intent intent = new Intent(getBaseContext(), UserlistActivity.class);
+            startActivityForResult(intent, SEARCH_RC);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

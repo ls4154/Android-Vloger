@@ -112,7 +112,6 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             String postParams = "id=" + strings[1] + "&pw=" + strings[2];
 
-            Log.d("LOGIN TASK", "DO IN BACKGROUND");
             try {
                 URL url = new URL(strings[0]);
                 HttpURLConnection huc = (HttpURLConnection) url.openConnection();
