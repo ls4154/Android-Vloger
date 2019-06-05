@@ -21,7 +21,7 @@ android {
 dependencies {
     android.defaultConfig.vectorDrawables.useSupportLibrary = true
 //    implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation ('com.squareup.picasso:picasso:2.71828') {
+    implementation('com.squareup.picasso:picasso:2.71828') {
         exclude group: 'com.android.support'
         exclude module: ['exifinterface', 'support-annotations']
     }
