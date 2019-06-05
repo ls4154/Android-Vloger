@@ -31,19 +31,6 @@
         />
 
     <ImageView
-        android:id="@+id/imgHeart"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/ic_heart_empty"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintVertical_bias="0.9"
-        app:layout_constraintHeight_percent="0.1"
-        app:layout_constraintBottom_toBottomOf="@id/imgBack"
-        app:layout_constraintEnd_toEndOf="@id/imgBack"
-        app:layout_constraintStart_toStartOf="@id/imgBack"
-        app:layout_constraintTop_toTopOf="@id/imgBack" />
-
-    <ImageView
         android:id="@+id/imgPlay"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -56,6 +43,26 @@
         />
 
     <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+
+        android:background="#80000000"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:text="가나다라마바사아자차카타파하가나다라마바사아자차카타파하"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-condensed-medium"
+
+        app:layout_constraintBottom_toBottomOf="@id/imgThumbnail"
+        app:layout_constraintEnd_toEndOf="@id/imgBack"
+        app:layout_constraintStart_toStartOf="@id/imgBack"
+        app:layout_constraintTop_toTopOf="@id/imgThumbnail"
+        app:layout_constraintVertical_bias="0" />
+
+    <TextView
         android:id="@+id/tvTop"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -63,6 +70,33 @@
         app:layout_constraintEnd_toEndOf="@id/imgBack"
         app:layout_constraintStart_toStartOf="@id/imgBack"
         app:layout_constraintTop_toTopOf="@id/imgBack"
+        />
+
+    <ImageView
+        android:id="@+id/imgHeart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_heart_empty"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintBottom_toBottomOf="@id/imgBack"
+        app:layout_constraintEnd_toEndOf="@id/imgBack"
+        app:layout_constraintStart_toEndOf="@id/imgThumbnail"
+        app:layout_constraintTop_toTopOf="@id/imgBack" />
+
+    <TextView
+        android:id="@+id/tvHeartnum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/imgHeart"
+        app:layout_constraintEnd_toEndOf="@id/imgHeart"
+        app:layout_constraintStart_toStartOf="@id/imgHeart"
+        android:textColor="#ffffffff"
+        android:text="130 Likes"
+        android:layout_margin="5dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="16sp"
         />
 
     <TextView
