@@ -22,7 +22,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_padding="10dp"
+        android:padding="10dp"
 
         android:background="#80000000"
         android:gravity="center_horizontal"

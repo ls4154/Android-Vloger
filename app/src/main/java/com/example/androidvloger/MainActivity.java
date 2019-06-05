@@ -9,6 +9,7 @@ import android.util.Pair;
 import android.widget.Adapter;
 import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     TimelineAdapter adapter;
 
     final static int SIGNUP_RC = 1111; // sign up request code
+    final static int LOGIN_RC = 1112; // sign up request code
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +38,18 @@ public class MainActivity extends AppCompatActivity {
         //MediaController controller = new MediaController(this);
         //controller.setMediaPlayer(vv);5
         //vv.setMediaController(controller);
-
-        tvTest = findViewById(R.id.tv_test);
+        
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         //initPlayer();
+        
+
+        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+        if (userId == null)
+            startActivityForResult(intent, LOGIN_RC);
     }
 
     @Override
@@ -56,10 +62,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         
-        if (requestCode == 1111) {
+        if (requestCode == SIGNUP_RC) {
             if (resultCode == RESULT_OK) {
                 userId = data.getExtras().getString("id");
-                tvTest.setText(userId);
+                getSupportActionBar().setTitle(userId);
+            }
+        } else if (requestCode == LOGIN_RC) {
+            if (resultCode == RESULT_OK) {
+                userId = data.getExtras().getString("id");
+                getSupportActionBar().setTitle(userId);
+                Toast.makeText(this, "Welcome " + userId, Toast.LENGTH_LONG).show();
             }
         }
     }

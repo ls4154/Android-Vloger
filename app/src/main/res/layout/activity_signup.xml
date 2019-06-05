@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Password"
-            android:inputType="numberPassword" />
+            android:inputType="textPassword" />
 
         <EditText
             android:id="@+id/et_su_pw2"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Confirm Password"
-            android:inputType="numberPassword" />
+            android:inputType="textPassword" />
 
         <EditText
             android:id="@+id/et_su_desc"

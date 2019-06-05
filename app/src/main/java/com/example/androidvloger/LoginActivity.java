@@ -28,9 +28,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        etId = findViewById(R.id.et_su_id);
-        etPw = findViewById(R.id.et_su_pw);
-        btnSend = findViewById(R.id.btn_su_send);
+        etId = findViewById(R.id.et_login_id);
+        etPw = findViewById(R.id.et_login_pw);
+        btnSend = findViewById(R.id.btn_login_send);
 
         btnSend.setOnClickListener(loginSendListner);
 
@@ -124,7 +124,6 @@ public class LoginActivity extends AppCompatActivity {
             if (s.substring(0, 5).equalsIgnoreCase("Error")) {
                 Toast.makeText(getApplicationContext(), "Wrong account!", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getApplicationContext(), "Welcome " + etId.getText().toString(), Toast.LENGTH_LONG).show();
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("id", etId.getText().toString());
                 setResult(RESULT_OK, resultIntent);
