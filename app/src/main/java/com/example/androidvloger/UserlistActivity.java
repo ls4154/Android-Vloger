@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,6 +24,9 @@ public class UserlistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userlist);
+        
+        GetData getData = new GetData();
+        getData.execute("http://" + IP_ADDR + "/getuser.php");
     }
 
     
@@ -69,7 +75,18 @@ public class UserlistActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d("json data", s);
+            Toast.makeText(getApplicationContext(), "Done", Toast.LENGTH_LONG).show();
+            try {
+                JSONObject jo = new JSONObject(s);
+                JSONArray ja = jo.getJSONArray("users");
+                for (int i = 0; i < ja.length(); i++) {
+                    ja.getJSONObject(i).getJSONObject("id");
+                    ja.getJSONObject(i).getJSONObject("name");
+                }
+            } catch (Exception e) {
+                Log.d("JSON Parser", "Error");
+            }                
+
         }
     } // Asynctask
     
