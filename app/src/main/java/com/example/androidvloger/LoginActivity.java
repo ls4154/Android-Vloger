@@ -59,6 +59,20 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SIGNUP_RC) {
+            if (resultCode == RESULT_OK) {
+                String uid = data.getExtras().getString("id");
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("id", uid);
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     Button.OnClickListener loginSendListner = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
