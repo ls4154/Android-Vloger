@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
@@ -27,7 +28,9 @@ public class UserlistActivity extends AppCompatActivity {
     ArrayList<Pair<String, String>> userList;
     EditText etSearch;
     RecyclerView recyclerView;
-    
+    UserlistAdapter adapter;
+    ArrayList<String> searchResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +98,7 @@ public class UserlistActivity extends AppCompatActivity {
                     String t1 = ja.getJSONObject(i).getString("id");
                     String t2 = ja.getJSONObject(i).getString("name");
                     Pair<String, String> tempPair = new Pair<>(t1, t2);
-                    userList.add(tempPair);
+                    userList.add(tempPair); // id로 검색되게 하고 보이는건 id/name 둘다
                 }
             } catch (Exception e) {
                 Log.d("JSON Parser", "Error");
@@ -103,11 +106,26 @@ public class UserlistActivity extends AppCompatActivity {
         }
     } // Asynctask
 
-    void search(View view){ // xml에 buttonSearch onclick으로 돼있음
+    void onclickSearch(View view){ // xml에 buttonSearch onclick으로 돼있음
+        searchResult = new ArrayList<>();
         String keyword = etSearch.getText().toString();
+        for(Pair<String, String> user : userList){
+            if(user.first.length() < keyword.length()) continue;
+            String subTemp = user.first.substring(0, keyword.length());
+            if(subTemp.equals(keyword)){
+                searchResult.add(user.second);
+            }
+        }
+        refresh();
     }
 
     void refresh(){
+        adapter = new UserlistAdapter(searchResult);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
+    void onclickFollow(View view){
 
     }
 }

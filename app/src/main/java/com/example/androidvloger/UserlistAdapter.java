@@ -2,7 +2,6 @@ package com.example.androidvloger;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,36 +12,33 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class UserpageAdapter extends RecyclerView.Adapter<UserpageAdapter.Holder>{
+public class UserlistAdapter extends RecyclerView.Adapter<UserlistAdapter.Holder>{
     private Context context;
-    private ArrayList<Pair<String, String>> list = null; // 아이템의 데이터 저장
+    private ArrayList<String> list = null; // 아이템의 데이터 저장
 
     // 생성자에서 데이터 리스트 객체를 전달받음.
-    UserpageAdapter(ArrayList<Pair<String, String>> list) {
+    UserlistAdapter(ArrayList<String> list) {
         this.list = list;
     }
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_userpage, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_userlist, parent,false);
         Holder holder = new Holder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        Pair<String, String> item = list.get(position);
-        holder.tvTitle.setText(item.first);
-        Picasso.get().load(item.second).into(holder.imgThumbnail);
+        String item = list.get(position);
+        holder.tvUsername.setText(item);
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        TextView tvTitle;
-        ImageView imgThumbnail;
+        TextView tvUsername;
         Holder(View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            imgThumbnail = itemView.findViewById(R.id.imgThumbnail);
+            tvUsername = itemView.findViewById(R.id.tvUsername);
         }
     }
 

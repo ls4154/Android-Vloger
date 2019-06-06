@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Adapter;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -26,10 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     TimelineAdapter adapter;
+    final String IP_ADDR = "13.124.45.74";
 
     final static int SIGNUP_RC = 1111; // sign up request code
     final static int LOGIN_RC = 1112; // sign up request code
     final static int SEARCH_RC = 1113; // sign up request code
+    final static int HOME_RC = 1114; // sign up request code
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         //MediaController controller = new MediaController(this);
         //controller.setMediaPlayer(vv);5
         //vv.setMediaController(controller);
-        
+        refresh();
     }
 
     @Override
@@ -73,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_main_search) {
             Intent intent = new Intent(getBaseContext(), UserlistActivity.class);
             startActivityForResult(intent, SEARCH_RC);
+        }
+        else if(id == R.id.action_main_home){
+            Intent intent = new Intent(getBaseContext(), UserpageActivity.class);
+            intent.putExtra("id", userId);
+            startActivityForResult(intent, HOME_RC);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -116,11 +124,44 @@ public class MainActivity extends AppCompatActivity {
         vv.stopPlayback();
     }
 
-    void refreshTimeline(){
+    void refresh(){
         // TODO
         // new TimelineAdapter에 들어가는 데이터 데베에서 받아온걸로 바꿔야함
-        adapter = new TimelineAdapter(new ArrayList<TimelineAdapter.ThumbItem>());
+        ArrayList<ThumbItem> thumblist = new ArrayList<>();
+        ThumbItem t = new ThumbItem();
+        t.imgPath = "http://" + IP_ADDR + "/thumb1.jpg";
+        t.title = "goooood";
+        t.uploader = "muzi";
+        t.videoId = 1;
+        t.uploadTime = "2019-05-01 13:23";
+        thumblist.add(t);
+        /*
+        t = new ThumbItem();
+        t.imgPath = "http://" + IP_ADDR + "/thumb2.jpg";
+        t.title = "goooood";
+        t.uploader = "muzi";
+        t.uploadTime = "2019-05-01 13:23";
+        thumblist.add(t);
+        */
+
+        adapter = new TimelineAdapter(thumblist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
+
+    public void onclickGotoDetail(View view){
+        Intent intent = new Intent(getBaseContext(), DetailActivity.class);
+        intent.putExtra("id", userId);
+        intent.putExtra("videoId", (Integer)view.getTag());
+        startActivity(intent);
+    }
+
+    public class ThumbItem {
+        String imgPath;
+        String uploader;
+        String title;
+        String uploadTime;
+        int videoId;
+    }
+
 }
