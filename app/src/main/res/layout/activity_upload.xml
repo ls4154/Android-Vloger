@@ -6,4 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".UploadActivity">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/et_up_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:inputType="textPersonName"
+            android:hint="Title" />
+
+        <EditText
+            android:id="@+id/et_up_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:gravity="start|top"
+            android:hint="About video"
+            android:inputType="textMultiLine" />
+
+        <Button
+            android:id="@+id/btn_up_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Video" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

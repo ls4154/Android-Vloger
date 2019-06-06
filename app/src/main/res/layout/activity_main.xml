@@ -42,6 +42,7 @@
         android:cropToPadding="false"
         android:paddingBottom="15dp"
         android:src="@drawable/ic_doublecircle"
+        android:onClick="onclickUpload"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/buttonNoti"
         app:layout_constraintStart_toEndOf="@id/buttonTimeline"

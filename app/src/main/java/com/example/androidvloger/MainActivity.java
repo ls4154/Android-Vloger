@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     final static int LOGIN_RC = 1112; // sign up request code
     final static int SEARCH_RC = 1113; // sign up request code
     final static int HOME_RC = 1114; // sign up request code
+    final static int UPLOAD_RC = 1115; // sign up request code
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +173,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getBaseContext(), NotificationActivity.class);
         intent.putExtra("id", userId);
         startActivity(intent);
+    }
+    
+    public void onclickUpload(View view) {
+        Intent intent = new Intent(getBaseContext(), UploadActivity.class);
+        intent.putExtra("id", userId);
+        startActivityForResult(intent, UPLOAD_RC);
     }
 
     public class ThumbItem {
