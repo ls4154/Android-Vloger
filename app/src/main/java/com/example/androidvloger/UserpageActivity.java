@@ -44,7 +44,7 @@ public class UserpageActivity extends AppCompatActivity {
         // TODO
         // 받아온 데이터로 리스트 만들기
         thumblist = new ArrayList<>();
-        String _path = "http://" + IP_ADDR + "/thumb1.jpg";
+        String _path = "http://" + IP_ADDR + "/thumb2.jpg";
         String _title = "good";
         thumblist.add(new Pair<>(_title, _path));
         adapter = new UserpageAdapter(thumblist);
@@ -55,5 +55,17 @@ public class UserpageActivity extends AppCompatActivity {
 
     void onclickFollow(View view){
 
+    }
+
+    public void onclickGotoTimeline(View view){
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        intent.putExtra("id", userId);
+        startActivity(intent);
+    }
+
+    public void onclickGotoNotification(View view){
+        Intent intent = new Intent(getBaseContext(), NotificationActivity.class);
+        intent.putExtra("id", userId);
+        startActivity(intent);
     }
 }

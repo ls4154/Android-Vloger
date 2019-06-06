@@ -39,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        Intent intent = getIntent();
+        try {
+            userId = intent.getExtras().getString("id");
+        }
+        catch(Exception e){
+            userId = null;
+        }
+
 
         //vv = findViewById(R.id.vv1);
         //MediaController controller = new MediaController(this);
@@ -153,6 +161,16 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getBaseContext(), DetailActivity.class);
         intent.putExtra("id", userId);
         intent.putExtra("videoId", (Integer)view.getTag());
+        startActivity(intent);
+    }
+
+    public void onclickGotoTimeline(View view){
+        refresh();
+    }
+
+    public void onclickGotoNotification(View view){
+        Intent intent = new Intent(getBaseContext(), NotificationActivity.class);
+        intent.putExtra("id", userId);
         startActivity(intent);
     }
 

@@ -116,6 +116,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/buttonUpload"
         app:layout_constraintStart_toStartOf="parent"
+        android:onClick="onclickGotoTimeline"
         app:layout_constraintTop_toBottomOf="@+id/guideline" />
 
     <ImageView
@@ -132,6 +133,7 @@
 
     <ImageView
         android:id="@+id/buttonNoti"
+        android:onClick="onclickGotoNotification"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="25dp"

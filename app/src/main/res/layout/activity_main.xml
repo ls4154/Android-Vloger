@@ -29,6 +29,7 @@
         android:layout_height="0dp"
         android:padding="20dp"
         android:src="@drawable/ic_hamburger"
+        android:onClick="onclickGotoTimeline"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/buttonUpload"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +49,7 @@
 
     <ImageView
         android:id="@+id/buttonNoti"
+        android:onClick="onclickGotoNotification"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="25dp"
