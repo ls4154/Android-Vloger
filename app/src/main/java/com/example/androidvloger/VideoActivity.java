@@ -1,6 +1,7 @@
 package com.example.androidvloger;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.MediaController;
@@ -23,6 +24,13 @@ public class VideoActivity extends AppCompatActivity {
         MediaController mediaController = new MediaController(this);
         mediaController.setAnchorView(vv);
         vv.setMediaController(mediaController);
+        
+        vv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                finish();
+            }
+        });
 
         getSupportActionBar().hide();
     }
