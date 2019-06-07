@@ -15,10 +15,12 @@ import java.util.ArrayList;
 
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Holder>{
     private Context context;
-    private ArrayList<MainActivity.ThumbItem> list = null; // 아이템의 데이터 저장
+    private ArrayList<String[]> list = null; // 아이템의 데이터 저장
+    final String IP_ADDR = "13.124.45.74";
+
 
     // 생성자에서 데이터 리스트 객체를 전달받음.
-    TimelineAdapter(ArrayList<MainActivity.ThumbItem> list) {
+    TimelineAdapter(ArrayList<String[]> list) {
         this.list = list;
     }
 
@@ -31,12 +33,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Holder
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        MainActivity.ThumbItem item = list.get(position);
-        holder.tvTitle.setText(item.title);
-        holder.tvUploader.setText(item.uploader);
-        holder.tvUploadTime.setText(item.uploadTime);
-        holder.constraintLayout.setTag(item.videoId);
-        Picasso.get().load(item.imgPath).into(holder.imgThumbnail);
+        String[] item = list.get(position);
+        String path = "http://"+IP_ADDR+"/thumb"+item[0]+".jpg";
+        holder.tvTitle.setText(item[1]);
+        holder.tvUploader.setText(item[2]);
+        holder.tvUploadTime.setText(item[4]);
+        Picasso.get().load(path).into(holder.imgThumbnail);
+        holder.constraintLayout.setTag(item);
     }
 
     public class Holder extends RecyclerView.ViewHolder {

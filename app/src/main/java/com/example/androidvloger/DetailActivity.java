@@ -1,9 +1,11 @@
 package com.example.androidvloger;
 
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,8 +18,10 @@ public class DetailActivity extends AppCompatActivity {
     TextView tvTitle, tvTop, tvHeartNum, tvUsername, tvUploadtime, tvDesc;
     RecyclerView recyclerView;
     EditText etComment;
+    ConstraintLayout constraintLayout;
     final String IP_ADDR = "13.124.45.74";
     String videoId;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +37,16 @@ public class DetailActivity extends AppCompatActivity {
         tvDesc=(TextView)findViewById(R.id.tvDesc);
         recyclerView=(RecyclerView)findViewById(R.id.recyclerView);
         etComment=(EditText)findViewById(R.id.etComment);
+        constraintLayout=(ConstraintLayout)findViewById(R.id.constraintLayout);
 
         Intent intent = getIntent();
-        Bundle ttt = intent.getExtras();
-
         String[] t = intent.getExtras().getStringArray("info");
+        userId = intent.getStringExtra("id");
 
         videoId = t[0];
         tvTitle.setText(t[1]);
         tvUsername.setText(t[2]);
+        tvUsername.setTag(t[2]);
         tvDesc.setText(t[3]);
         tvUploadtime.setText(t[4]);
         String path = "http://"+IP_ADDR+"/thumb"+videoId+".jpg";
@@ -51,4 +56,16 @@ public class DetailActivity extends AppCompatActivity {
     void onclickHeart(View view){
 
     }
+
+    void onclickGotoUserpage(View view){
+        Intent intent = new Intent(getBaseContext(), UserpageActivity.class);
+        intent.putExtra("id", userId);
+        String pageId = (String)view.getTag();
+        String t = pageId;
+        intent.putExtra("pageid", pageId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
 }

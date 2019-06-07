@@ -30,12 +30,15 @@ public class UserlistActivity extends AppCompatActivity {
     EditText etSearch;
     RecyclerView recyclerView;
     UserlistAdapter adapter;
-    ArrayList<String> searchResult;
+    ArrayList<Pair<String,String>> searchResult;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userlist);
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("id");
 
         etSearch = (EditText) findViewById(R.id.etSearch);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -122,7 +125,7 @@ public class UserlistActivity extends AppCompatActivity {
             if(user.first.length() < keyword.length()) continue;
             String subTemp = user.first.substring(0, keyword.length());
             if(subTemp.equals(keyword)){
-                searchResult.add(user.second);
+                searchResult.add(user);
             }
         }
         refresh();
@@ -135,6 +138,15 @@ public class UserlistActivity extends AppCompatActivity {
     }
 
     void onclickFollow(View view){
+    }
 
+    void onclickGotoUserpage(View view){
+        Intent intent = new Intent(getBaseContext(), UserpageActivity.class);
+        intent.putExtra("id", userId);
+        String pageId = ((Pair<String,String>)view.getTag()).first;
+        intent.putExtra("pageid", pageId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

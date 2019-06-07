@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     TimelineAdapter adapter;
     final String IP_ADDR = "13.124.45.74";
+    ArrayList<String[]> thumblist;
 
     final static int SIGNUP_RC = 1111; // sign up request code
     final static int LOGIN_RC = 1112; // sign up request code
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_main_search) {
             Intent intent = new Intent(getBaseContext(), UserlistActivity.class);
+            intent.putExtra("id", userId);
             startActivityForResult(intent, SEARCH_RC);
         }
         else if(id == R.id.action_main_home){
@@ -112,9 +114,8 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 userId = data.getExtras().getString("id");
                 Toast.makeText(this, "Welcome " + userId, Toast.LENGTH_LONG).show();
-                
-                GetData getData = new GetData();
-                getData.execute("http://" + IP_ADDR + "/get_timeline.php", userId);
+
+                refresh();
             }
         }
     }
@@ -141,34 +142,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void refresh(){
-        // TODO
-        // new TimelineAdapter에 들어가는 데이터 데베에서 받아온걸로 바꿔야함
-        ArrayList<ThumbItem> thumblist = new ArrayList<>();
-        ThumbItem t = new ThumbItem();
-        t.imgPath = "http://" + IP_ADDR + "/thumb1.jpg";
-        t.title = "goooood";
-        t.uploader = "muzi";
-        t.videoId = 1;
-        t.uploadTime = "2019-05-01 13:23";
-        thumblist.add(t);
-        /*
-        t = new ThumbItem();
-        t.imgPath = "http://" + IP_ADDR + "/thumb2.jpg";
-        t.title = "goooood";
-        t.uploader = "muzi";
-        t.uploadTime = "2019-05-01 13:23";
-        thumblist.add(t);
-        */
+        GetData getData = new GetData();
+        getData.execute("http://" + IP_ADDR + "/get_timeline.php", userId);
+    }
 
+    void refreshUI(){
         adapter = new TimelineAdapter(thumblist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
 
     public void onclickGotoDetail(View view){
-        Intent intent = new Intent(getBaseContext(), DetailActivity.class);
+        Intent intent = new Intent(this, DetailActivity.class);
+        String[] t = (String[])view.getTag();
+        intent.putExtra("info",t);
         intent.putExtra("id", userId);
-        intent.putExtra("videoId", (Integer)view.getTag());
         startActivity(intent);
     }
 
@@ -186,14 +174,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getBaseContext(), UploadActivity.class);
         intent.putExtra("id", userId);
         startActivityForResult(intent, UPLOAD_RC);
-    }
-
-    public class ThumbItem {
-        String imgPath;
-        String uploader;
-        String title;
-        String uploadTime;
-        int videoId;
     }
 
     class GetData extends AsyncTask<String, Void, String> {
@@ -252,17 +232,21 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject jo = new JSONObject(s);
                 JSONArray ja = jo.getJSONArray("videos");
                 userName = jo.getString("name");
-                
+
+                thumblist = new ArrayList<>();
                 for (int i = ja.length()-1; i >= 0; i--) {
-                    String t1 = ja.getJSONObject(i).getString("id"); // video id
-                    String t2 = ja.getJSONObject(i).getString("title"); // video title
-                    String t3 = ja.getJSONObject(i).getString("uploader");
-                    String t4 = ja.getJSONObject(i).getString("desc");
-                    String t5 = ja.getJSONObject(i).getString("date");
+                    String[] t = new String[5];
+                    t[0] = ja.getJSONObject(i).getString("id"); // video id
+                    t[1] = ja.getJSONObject(i).getString("title"); // video title
+                    t[2] = ja.getJSONObject(i).getString("uploader");
+                    t[3] = ja.getJSONObject(i).getString("desc");
+                    t[4] = ja.getJSONObject(i).getString("date");
+                    thumblist.add(t);
                 }
             } catch (Exception e) {
                 Log.d("JSON Parser", "Error");
             }
+            refreshUI();
         }
     } // Asynctask
 

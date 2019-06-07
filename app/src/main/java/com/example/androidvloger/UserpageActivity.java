@@ -82,6 +82,7 @@ public class UserpageActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_main_search) {
             Intent intent = new Intent(getBaseContext(), UserlistActivity.class);
+            intent.putExtra("id", userId);
             startActivityForResult(intent, SEARCH_RC);
         }
         else if(id == R.id.action_main_home){
@@ -219,6 +220,7 @@ public class UserpageActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DetailActivity.class);
         String[] t = (String[])view.getTag();
         intent.putExtra("info",t);
+        intent.putExtra("id", userId);
         startActivity(intent);
     }
 }
