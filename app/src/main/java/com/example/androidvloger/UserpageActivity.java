@@ -188,7 +188,6 @@ public class UserpageActivity extends AppCompatActivity {
                 
                 tvUsername.setText(jo.getString("name"));
                 
-                // desc 텍스트뷰 만들면 사용 
                 tvUserDesc.setText(jo.getString("desc"));
 
                 thumblist = new ArrayList<>();
