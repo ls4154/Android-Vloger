@@ -11,7 +11,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fontFamily="sans-serif-medium"
-        android:gravity="center"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
         android:text="user name"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/buttonFollow"
@@ -56,10 +57,9 @@
         android:textStyle="bold"
         android:layout_margin="10dp"
         app:layout_constraintTop_toBottomOf="@id/tvUsername"
-        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:layout_constraintBottom_toTopOf="@id/tvUserDesc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tvFollowingsNum"
-        app:layout_constraintHeight_percent="0.08"
         android:onClick="onclickFollow"
         />
 
@@ -69,7 +69,7 @@
         android:layout_height="0dp"
         android:gravity="center_horizontal"
         app:layout_constraintTop_toBottomOf="@id/tvFollowings"
-        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:layout_constraintBottom_toTopOf="@id/tvUserDesc"
         app:layout_constraintStart_toStartOf="@id/tvFollowings"
         app:layout_constraintEnd_toStartOf="@id/tvFollowersNum"
         app:layout_constraintHeight_percent="0.08"
@@ -81,11 +81,25 @@
         android:layout_height="0dp"
         android:gravity="center_horizontal"
         app:layout_constraintTop_toBottomOf="@id/tvFollowers"
-        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:layout_constraintBottom_toTopOf="@id/tvUserDesc"
         app:layout_constraintStart_toStartOf="@id/tvFollowers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.08"
         android:text="1988" />
+
+    <TextView
+        android:id="@+id/tvUserDesc"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        app:layout_constraintHeight_percent="0.09"
+        app:layout_constraintTop_toBottomOf="@id/buttonFollow"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="랄랄랄라라라 안녕하세요 조은~하루예요 늘 감사하며 살자~~ 화이팅 저의 오늘 저녁 메뉴는~ 갓균관대 갓프트웨어학과에서 준 언빌리버블 버거랍니다" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -95,13 +109,14 @@
         app:layout_constraintBottom_toTopOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="1"
         app:layout_constraintHeight_percent="0.65"
         app:layoutManager="android.support.v7.widget.GridLayoutManager"
         >
     </android.support.v7.widget.RecyclerView>
 
     <android.support.constraint.Guideline
-        app:layout_constraintGuide_percent="0.85"
+        app:layout_constraintGuide_percent="0.90"
         android:id="@+id/guideline"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
@@ -111,7 +126,7 @@
         android:id="@+id/buttonTimeline"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="20dp"
+        android:padding="10dp"
         android:src="@drawable/ic_hamburger"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/buttonUpload"
@@ -124,7 +139,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:cropToPadding="false"
-        android:paddingBottom="15dp"
+        android:padding="10dp"
         android:src="@drawable/ic_doublecircle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/buttonNoti"
@@ -136,7 +151,7 @@
         android:onClick="onclickGotoNotification"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="25dp"
+        android:padding="10dp"
         android:src="@drawable/ic_noti"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

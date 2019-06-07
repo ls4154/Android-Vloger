@@ -25,6 +25,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+
 public class UserpageActivity extends AppCompatActivity {
     final String IP_ADDR = "13.124.45.74";
     String userId;
@@ -32,7 +34,7 @@ public class UserpageActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     UserpageAdapter adapter;
-    TextView tvUsername, tvFollowingsNum, tvFollowersNum;
+    TextView tvUsername, tvFollowingsNum, tvFollowersNum, tvUserDesc;
     Button buttonFollow;
     ArrayList<Pair<String, String>> thumblist;
 
@@ -44,8 +46,10 @@ public class UserpageActivity extends AppCompatActivity {
         tvUsername = (TextView)findViewById(R.id.tvUsername);
         tvFollowingsNum = (TextView)findViewById(R.id.tvFollowingsNum);
         tvFollowersNum = (TextView)findViewById(R.id.tvFollowersNum);
+        tvUserDesc = (TextView)findViewById(R.id.tvUserDesc);
 
-        
+        thumblist = new ArrayList<>();
+
         Intent intent = getIntent();
         userId = intent.getExtras().getString("id"); // login user id
         pageId = intent.getExtras().getString("pageid"); // page user id
@@ -53,19 +57,15 @@ public class UserpageActivity extends AppCompatActivity {
         
         
         // 팔로잉수 팔로워수도 데베에서 읽어와서 처리하기
-        GetData getData = new GetData();
-        getData.execute("http://" + IP_ADDR + "/get_userpage.php", pageId);
-
         refresh();
     }
 
     void refresh(){
-        // TODO
-        // 받아온 데이터로 리스트 만들기
-        thumblist = new ArrayList<>();
-        String _path = "http://" + IP_ADDR + "/thumb2.jpg";
-        String _title = "good";
-        thumblist.add(new Pair<>(_title, _path));
+        GetData getData = new GetData();
+        getData.execute("http://" + IP_ADDR + "/get_userpage.php", pageId);
+    }
+
+    void refreshUI(){
         adapter = new UserpageAdapter(thumblist);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -79,6 +79,8 @@ public class UserpageActivity extends AppCompatActivity {
     public void onclickGotoTimeline(View view){
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("id", userId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -153,25 +155,22 @@ public class UserpageActivity extends AppCompatActivity {
                 tvUsername.setText(jo.getString("name"));
                 
                 // desc 텍스트뷰 만들면 사용 
-                //tvDesc.setText(jo.getString("desc"));
-                
-                for (int i = 0; i < ja.length(); i++) {
-                    String t1 = ja.getJSONObject(i).getString("id");
-                    String t2 = ja.getJSONObject(i).getString("title");
-                    String t3 = ja.getJSONObject(i).getString("uploader");
-                    String t4 = ja.getJSONObject(i).getString("desc");
-                    String t5 = ja.getJSONObject(i).getString("date");
-                    
-                    // 리스트에 추가한다 
+                tvUserDesc.setText(jo.getString("desc"));
+
+                thumblist = new ArrayList<>();
+                for (int i = ja.length()-1; i >= 0; i--) {
+                    String t1 = ja.getJSONObject(i).getString("id"); // video id
+                    String t2 = ja.getJSONObject(i).getString("title"); // video title
+//                    String t3 = ja.getJSONObject(i).getString("uploader");
+//                    String t4 = ja.getJSONObject(i).getString("desc");
+//                    String t5 = ja.getJSONObject(i).getString("date");
+                    Pair<String, String> t = new Pair<>(t2, "http://"+IP_ADDR+"/thumb"+t1+".jpg");
+                    thumblist.add(t);
                 }
-                
-                
-                
-                
-                
             } catch (Exception e) {
                 Log.d("JSON Parser", "Error");
             }
+            refreshUI();
         }
     } // Asynctask
 }

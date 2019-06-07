@@ -17,6 +17,8 @@ import android.widget.VideoView;
 
 import java.util.ArrayList;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+
 public class MainActivity extends AppCompatActivity {
 
     VideoView vv;
@@ -47,12 +49,6 @@ public class MainActivity extends AppCompatActivity {
         catch(Exception e){
             userId = null;
         }
-
-
-        //vv = findViewById(R.id.vv1);
-        //MediaController controller = new MediaController(this);
-        //controller.setMediaPlayer(vv);5
-        //vv.setMediaController(controller);
         refresh();
     }
 
@@ -60,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //initPlayer();
-        
 
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
         if (userId == null)
@@ -90,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getBaseContext(), UserpageActivity.class);
             intent.putExtra("id", userId);
             intent.putExtra("pageid", userId);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivityForResult(intent, HOME_RC);
         }
         return super.onOptionsItemSelected(item);
