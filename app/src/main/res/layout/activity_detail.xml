@@ -47,6 +47,7 @@
         android:id="@+id/tvTop"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:onClick="onClickPlay"
         app:layout_constraintBottom_toBottomOf="@id/imgBack"
         app:layout_constraintEnd_toEndOf="@id/imgBack"
         app:layout_constraintStart_toStartOf="@id/imgBack"
