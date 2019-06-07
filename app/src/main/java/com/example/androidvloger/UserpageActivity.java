@@ -34,11 +34,13 @@ public class UserpageActivity extends AppCompatActivity {
     String userId;
     String pageId;
 
+    final static int UPLOAD_RC = 1115; // sign up request code
+
     RecyclerView recyclerView;
     UserpageAdapter adapter;
     TextView tvUsername, tvFollowingsNum, tvFollowersNum, tvUserDesc;
     Button buttonFollow;
-    ArrayList<Pair<String, String>> thumblist;
+    ArrayList<String[]> thumblist;
 
     final static int SEARCH_RC = 1113; // sign up request code
     final static int HOME_RC = 1114; // sign up request code
@@ -57,8 +59,8 @@ public class UserpageActivity extends AppCompatActivity {
         thumblist = new ArrayList<>();
 
         Intent intent = getIntent();
-        userId = intent.getExtras().getString("id"); // login user id
-        pageId = intent.getExtras().getString("pageid"); // page user id
+        userId = intent.getStringExtra("id"); // login user id
+        pageId = intent.getStringExtra("pageid"); // page user id
         tvUsername.setText(pageId);
         
         // 본인 페이지면 팔로우 불가능 
@@ -192,12 +194,12 @@ public class UserpageActivity extends AppCompatActivity {
 
                 thumblist = new ArrayList<>();
                 for (int i = ja.length()-1; i >= 0; i--) {
-                    String t1 = ja.getJSONObject(i).getString("id"); // video id
-                    String t2 = ja.getJSONObject(i).getString("title"); // video title
-//                    String t3 = ja.getJSONObject(i).getString("uploader");
-//                    String t4 = ja.getJSONObject(i).getString("desc");
-//                    String t5 = ja.getJSONObject(i).getString("date");
-                    Pair<String, String> t = new Pair<>(t2, "http://"+IP_ADDR+"/thumb"+t1+".jpg");
+                    String[] t = new String[5];
+                    t[0] = ja.getJSONObject(i).getString("id");
+                    t[1] = ja.getJSONObject(i).getString("title"); // video title
+                    t[2] = ja.getJSONObject(i).getString("uploader");
+                    t[3] = ja.getJSONObject(i).getString("desc");
+                    t[4] = ja.getJSONObject(i).getString("date");
                     thumblist.add(t);
                 }
             } catch (Exception e) {
@@ -206,4 +208,17 @@ public class UserpageActivity extends AppCompatActivity {
             refreshUI();
         }
     } // Asynctask
+
+    public void onclickUpload(View view) {
+        Intent intent = new Intent(getBaseContext(), UploadActivity.class);
+        intent.putExtra("id", userId);
+        startActivityForResult(intent, UPLOAD_RC);
+    }
+
+    public void onclickGotoDetail(View view){
+        Intent intent = new Intent(this, DetailActivity.class);
+        String[] t = (String[])view.getTag();
+        intent.putExtra("info",t);
+        startActivity(intent);
+    }
 }
