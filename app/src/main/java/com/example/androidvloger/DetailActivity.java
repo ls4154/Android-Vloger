@@ -3,8 +3,11 @@ package com.example.androidvloger;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
@@ -27,7 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     ImageView imgThumbnail, imgHeart;
     TextView tvTitle, tvTop, tvHeartNum, tvUsername, tvUploadtime, tvDesc;
     RecyclerView recyclerView;
@@ -36,6 +39,9 @@ public class DetailActivity extends AppCompatActivity {
     final String IP_ADDR = "13.124.45.74";
     String videoId;
     String userId;
+    ArrayList<String[]> commentlist;
+    SwipeRefreshLayout swipeRefreshLayout;
+    DetailAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,9 @@ public class DetailActivity extends AppCompatActivity {
         etComment = findViewById(R.id.etComment);
         constraintLayout = findViewById(R.id.constraintLayout);
 
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
@@ -69,10 +78,9 @@ public class DetailActivity extends AppCompatActivity {
         
         String path = "http://" + IP_ADDR + "/thumb" + videoId + ".jpg";
         Picasso.get().load(path).into(imgThumbnail);
-        
+
+        refresh();
         // 댓글 가져오기
-        GetData getData = new GetData();
-        getData.execute("http://" + IP_ADDR + "/get_comments.php", videoId);
     }
 
     @Override
@@ -97,7 +105,6 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = new Intent(getBaseContext(), UserpageActivity.class);
         intent.putExtra("id", userId);
         String pageId = (String)view.getTag();
-        String t = pageId;
         intent.putExtra("pageid", pageId);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -160,16 +167,40 @@ public class DetailActivity extends AppCompatActivity {
                 JSONObject jo = new JSONObject(s);
                 JSONArray ja = jo.getJSONArray("comments");
 
+                commentlist = new ArrayList<>();
                 for (int i = ja.length()-1; i >= 0; i--) {
                     String[] t = new String[3];
                     t[0] = ja.getJSONObject(i).getString("id"); // 댓글쓴 사람 id
                     t[1] = ja.getJSONObject(i).getString("name"); // 댓글쓴 사람 이름
                     t[2] = ja.getJSONObject(i).getString("content"); // 댓글 내용
+                    commentlist.add(t);
                 }
             } catch (Exception e) {
                 Log.d("JSON Parser", "Error");
             }
+            refreshUI();
         }
     } // Asynctask
-    
+
+    void refresh(){
+        GetData getData = new GetData();
+        getData.execute("http://" + IP_ADDR + "/get_comments.php", videoId);
+    }
+
+    void refreshUI(){
+        adapter = new DetailAdapter(commentlist);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
+    public void onRefresh() {
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refresh();
+                Snackbar.make(recyclerView,"Refresh Success",Snackbar.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        },500);
+    }
 }
