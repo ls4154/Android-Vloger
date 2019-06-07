@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("pageid", userId);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivityForResult(intent, HOME_RC);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

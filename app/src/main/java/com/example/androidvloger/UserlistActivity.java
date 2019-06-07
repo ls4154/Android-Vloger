@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -39,11 +40,20 @@ public class UserlistActivity extends AppCompatActivity {
         etSearch = (EditText) findViewById(R.id.etSearch);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         GetData getData = new GetData();
         getData.execute("http://" + IP_ADDR + "/getuser.php");
     }
 
-    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     class GetData extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -90,7 +100,6 @@ public class UserlistActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             userList = new ArrayList<>();
-            Toast.makeText(getApplicationContext(), "Done", Toast.LENGTH_LONG).show();
             try {
                 JSONObject jo = new JSONObject(s);
                 JSONArray ja = jo.getJSONArray("users");
