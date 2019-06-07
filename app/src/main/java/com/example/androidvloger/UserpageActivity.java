@@ -2,6 +2,8 @@ package com.example.androidvloger;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
-public class UserpageActivity extends AppCompatActivity {
+public class UserpageActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     final String IP_ADDR = "13.124.45.74";
     String userId;
     String pageId;
@@ -41,6 +43,7 @@ public class UserpageActivity extends AppCompatActivity {
     TextView tvUsername, tvFollowingsNum, tvFollowersNum, tvUserDesc;
     Button buttonFollow;
     ArrayList<String[]> thumblist;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     final static int SEARCH_RC = 1113; // sign up request code
     final static int HOME_RC = 1114; // sign up request code
@@ -55,6 +58,8 @@ public class UserpageActivity extends AppCompatActivity {
         tvFollowersNum = findViewById(R.id.tvFollowersNum);
         tvUserDesc = findViewById(R.id.tvUserDesc);
         buttonFollow = findViewById(R.id.buttonFollow);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         thumblist = new ArrayList<>();
 
@@ -223,4 +228,17 @@ public class UserpageActivity extends AppCompatActivity {
         intent.putExtra("id", userId);
         startActivity(intent);
     }
+
+    @Override
+    public void onRefresh() {
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refresh();
+                Snackbar.make(recyclerView,"Refresh Success",Snackbar.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        },500);
+    }
+
 }

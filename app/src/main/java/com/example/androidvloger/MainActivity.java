@@ -2,6 +2,8 @@ package com.example.androidvloger;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     VideoView vv;
     
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     String userName;
 
     RecyclerView recyclerView;
+    SwipeRefreshLayout swipeRefreshLayout;
     TimelineAdapter adapter;
     final String IP_ADDR = "13.124.45.74";
     ArrayList<String[]> thumblist;
@@ -62,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
         catch(Exception e){
             userId = null;
         }
-        
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         getSupportActionBar().setTitle("Timeline");
         
         refresh();
@@ -155,6 +160,19 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, UPLOAD_RC);
     }
 
+
+    @Override
+    public void onRefresh() {
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refresh();
+                Snackbar.make(recyclerView,"Refresh Success",Snackbar.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        },500);
+    }
+
     class GetData extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -214,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
                 thumblist = new ArrayList<>();
                 for (int i = ja.length()-1; i >= 0; i--) {
+                    if(ja.length() - i > 30) break; // 최신 30개
                     String[] t = new String[5];
                     t[0] = ja.getJSONObject(i).getString("id"); // video id
                     t[1] = ja.getJSONObject(i).getString("title"); // video title
