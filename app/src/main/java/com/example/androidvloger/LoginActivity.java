@@ -37,8 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btn_login_send);
 
         btnSend.setOnClickListener(loginSendListner);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
         getSupportActionBar().setTitle("Login");
     }
 

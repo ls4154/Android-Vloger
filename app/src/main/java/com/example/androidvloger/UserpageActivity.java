@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -38,6 +40,9 @@ public class UserpageActivity extends AppCompatActivity {
     Button buttonFollow;
     ArrayList<Pair<String, String>> thumblist;
 
+    final static int SEARCH_RC = 1113; // sign up request code
+    final static int HOME_RC = 1114; // sign up request code
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,29 @@ public class UserpageActivity extends AppCompatActivity {
         
         // 팔로잉수 팔로워수도 데베에서 읽어와서 처리하기
         refresh();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_main_search) {
+            Intent intent = new Intent(getBaseContext(), UserlistActivity.class);
+            startActivityForResult(intent, SEARCH_RC);
+        }
+        else if(id == R.id.action_main_home){
+            Intent intent = new Intent(getBaseContext(), UserpageActivity.class);
+            intent.putExtra("id", userId);
+            intent.putExtra("pageid", userId);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     void refresh(){
