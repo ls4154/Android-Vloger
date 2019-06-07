@@ -150,6 +150,11 @@ public class UserpageActivity extends AppCompatActivity {
                 int cntFollowing = jo.getInt("followings");
                 tvFollowingsNum.setText("" + cntFollowing);
                 
+                tvUsername.setText(jo.getString("name"));
+                
+                // desc 텍스트뷰 만들면 사용 
+                //tvDesc.setText(jo.getString("desc"));
+                
                 for (int i = 0; i < ja.length(); i++) {
                     String t1 = ja.getJSONObject(i).getString("id");
                     String t2 = ja.getJSONObject(i).getString("title");
