@@ -192,7 +192,7 @@ public class UploadActivity extends AppCompatActivity {
                 os.writeBytes("Content-Disposition: form-data; name=\"" + "title" + "\"" + lineEnd);
                 os.writeBytes("Content-Type: text/plain" + lineEnd);
                 os.writeBytes(lineEnd);
-                os.writeBytes(strings[1]);
+                os.write(strings[1].getBytes("UTF-8"));
                 os.writeBytes(lineEnd);
 
                 // POST Param uploader
@@ -200,7 +200,7 @@ public class UploadActivity extends AppCompatActivity {
                 os.writeBytes("Content-Disposition: form-data; name=\"" + "uploader" + "\"" + lineEnd);
                 os.writeBytes("Content-Type: text/plain" + lineEnd);
                 os.writeBytes(lineEnd);
-                os.writeBytes(strings[2]);
+                os.write(strings[2].getBytes("UTF-8"));
                 os.writeBytes(lineEnd);
 
                 // POST Param desc
@@ -208,7 +208,7 @@ public class UploadActivity extends AppCompatActivity {
                 os.writeBytes("Content-Disposition: form-data; name=\"" + "desc" + "\"" + lineEnd);
                 os.writeBytes("Content-Type: text/plain" + lineEnd);
                 os.writeBytes(lineEnd);
-                os.writeBytes(strings[3]);
+                os.write(strings[3].getBytes("UTF-8"));
                 os.writeBytes(lineEnd);
                 
                 os.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
