@@ -200,12 +200,13 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
 
                 thumblist = new ArrayList<>();
                 for (int i = ja.length()-1; i >= 0; i--) {
-                    String[] t = new String[5];
+                    String[] t = new String[6];
                     t[0] = ja.getJSONObject(i).getString("id");
                     t[1] = ja.getJSONObject(i).getString("title"); // video title
                     t[2] = ja.getJSONObject(i).getString("uploader");
                     t[3] = ja.getJSONObject(i).getString("desc");
                     t[4] = ja.getJSONObject(i).getString("date");
+                    t[5] = jo.getString("name");
                     thumblist.add(t);
                 }
             } catch (Exception e) {

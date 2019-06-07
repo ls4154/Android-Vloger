@@ -157,7 +157,7 @@
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.35"
+        app:layout_constraintHeight_percent="0.3"
         app:layout_constraintTop_toBottomOf="@id/tvDesc"
         app:layout_constraintBottom_toTopOf="@id/etComment"
         app:layout_constraintStart_toStartOf="parent"
@@ -182,6 +182,8 @@
         android:inputType="textPersonName"
         android:padding="5dp"
 
+        app:layout_constraintHeight_percent="0.1"
+
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/buttonComment"
@@ -195,9 +197,10 @@
         android:text="WRITE"
         android:background="@color/colorAccent"
         android:onClick="onClickComment"
+        app:layout_constraintWidth_percent="0.2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/swipeRefreshLayout"
-        app:layout_constraintLeft_toRightOf="@id/etComment"/>
+        app:layout_constraintBottom_toBottomOf="@id/etComment"
+        app:layout_constraintTop_toTopOf="@id/etComment"
+        app:layout_constraintStart_toEndOf="@id/etComment"/>
 
 </android.support.constraint.ConstraintLayout>
