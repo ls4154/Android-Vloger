@@ -71,11 +71,11 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
 
         videoId = t[0];
         tvTitle.setText(t[1]);
-        tvUsername.setText(t[2]);
         tvUsername.setTag(t[2]);
         tvDesc.setText(t[3]);
         tvUploadtime.setText(t[4]);
-        
+        tvUsername.setText(t[5]);
+
         String path = "http://" + IP_ADDR + "/thumb" + videoId + ".jpg";
         Picasso.get().load(path).into(imgThumbnail);
 

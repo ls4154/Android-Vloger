@@ -36,7 +36,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Holder
         String[] item = list.get(position);
         String path = "http://"+IP_ADDR+"/thumb"+item[0]+".jpg";
         holder.tvTitle.setText(item[1]);
-        holder.tvUploader.setText(item[2]);
+        holder.tvUploader.setText(item[5]);
         holder.tvUploadTime.setText(item[4]);
         Picasso.get().load(path).into(holder.imgThumbnail);
         holder.constraintLayout.setTag(item);

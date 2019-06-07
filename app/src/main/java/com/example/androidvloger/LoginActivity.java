@@ -19,6 +19,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+// TODO
+// 뒤로 가기했을때 앱 꺼지게
 public class LoginActivity extends AppCompatActivity {
     final static int SIGNUP_RC = 1111;
     

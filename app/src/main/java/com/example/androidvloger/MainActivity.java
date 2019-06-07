@@ -233,14 +233,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 thumblist = new ArrayList<>();
                 for (int i = ja.length()-1; i >= 0; i--) {
                     if(ja.length() - i > 30) break; // 최신 30개
-                    String[] t = new String[5];
+                    String[] t = new String[6];
                     t[0] = ja.getJSONObject(i).getString("id"); // video id
                     t[1] = ja.getJSONObject(i).getString("title"); // video title
                     t[2] = ja.getJSONObject(i).getString("uploader");
                     t[3] = ja.getJSONObject(i).getString("desc");
                     t[4] = ja.getJSONObject(i).getString("date");
-                    
-                    ja.getJSONObject(i).getString("name"); //이게 업로더 이름 
+                    t[5] = ja.getJSONObject(i).getString("name"); //이게 업로더 이름
                     thumblist.add(t);
                 }
             } catch (Exception e) {
