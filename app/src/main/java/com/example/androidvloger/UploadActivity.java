@@ -99,6 +99,10 @@ public class UploadActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Enter a description", Toast.LENGTH_LONG).show();
             return;
         }
+        if(vTitle.length() > 24){
+            Toast.makeText(getApplicationContext(), "Title length should be shorter than 24", Toast.LENGTH_LONG).show();
+            return;
+        }
         
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath());
