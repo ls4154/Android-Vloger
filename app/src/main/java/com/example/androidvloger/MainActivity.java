@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         else if(id == R.id.action_main_home){
             Intent intent = new Intent(getBaseContext(), UserpageActivity.class);
             intent.putExtra("id", userId);
+            intent.putExtra("pageid", userId);
             startActivityForResult(intent, HOME_RC);
         }
         return super.onOptionsItemSelected(item);
