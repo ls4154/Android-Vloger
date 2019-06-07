@@ -119,27 +119,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        /*
-        if (userId == null) { // 로그인 되어 있지 않으면
-            Intent intent = new Intent(getBaseContext(), SignupActivity.class);
-            startActivityForResult(intent, 1111);
-        }*/
-    }
-
-    public void initPlayer() {
-        String path = "https://s3.ap-northeast-2.amazonaws.com/ls41540/2019-05-15+12.21.20.mp4";
-        //path="http://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4";
-        vv.setVideoPath(path);
-        vv.start();
-    }
-
-    public void stopPlayer() {
-        vv.stopPlayback();
-    }
-
     void refresh(){
         // TODO
         // new TimelineAdapter에 들어가는 데이터 데베에서 받아온걸로 바꿔야함

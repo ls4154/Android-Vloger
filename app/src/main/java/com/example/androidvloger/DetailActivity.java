@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,6 +35,8 @@ public class DetailActivity extends AppCompatActivity {
         recyclerView=(RecyclerView)findViewById(R.id.recyclerView);
         etComment=(EditText)findViewById(R.id.etComment);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent intent = getIntent();
         Bundle ttt = intent.getExtras();
 
@@ -46,6 +49,20 @@ public class DetailActivity extends AppCompatActivity {
         tvUploadtime.setText(t[4]);
         String path = "http://"+IP_ADDR+"/thumb"+videoId+".jpg";
         Picasso.get().load(path).into(imgThumbnail);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    
+    void onClickPlay(View view) {
+        Intent intent = new Intent(getBaseContext(), VideoActivity.class);
+        intent.putExtra("id", videoId);
+        startActivity(intent);
     }
 
     void onclickHeart(View view){
