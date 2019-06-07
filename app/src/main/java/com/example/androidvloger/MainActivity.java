@@ -239,6 +239,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     t[2] = ja.getJSONObject(i).getString("uploader");
                     t[3] = ja.getJSONObject(i).getString("desc");
                     t[4] = ja.getJSONObject(i).getString("date");
+                    
+                    ja.getJSONObject(i).getString("name"); //이게 업로더 이름 
                     thumblist.add(t);
                 }
             } catch (Exception e) {
