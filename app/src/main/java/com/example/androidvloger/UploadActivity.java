@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -21,13 +22,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class UploadActivity extends AppCompatActivity {
+    final String IP_ADDR = "13.124.45.74";
     EditText etTitle;
     EditText etDesc;
     Button btnUpload;
+    String userId;
     
 
     @Override
@@ -40,6 +50,8 @@ public class UploadActivity extends AppCompatActivity {
         btnUpload = findViewById(R.id.btn_up_up);
         
         btnUpload.setOnClickListener(uploadOnClickListener);
+        
+        userId = getIntent().getStringExtra("id");
     }
     
     
@@ -101,12 +113,154 @@ public class UploadActivity extends AppCompatActivity {
 
         if (requestCode == 2222) {
             Uri uri = data.getData();
-            String src = uri.getPath();
+            String src = getPath(getApplicationContext(), uri);
             
-            File file = new File(src);
-            
+            SendData task = new SendData();
+            task.execute("http://" + IP_ADDR + "/upload_vid.php", etTitle.getText().toString(), userId, etDesc.getText().toString(), src);
         }
     }
+
+
+    class SendData extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String postParams = "title=" + strings[1] + "&uploader=" + strings[2] +
+                    "&desc=" + strings[3];
+
+            String src = strings[4];
+            File file = new File(src);
+            
+            String twoHyphens = "--";
+            String boundary = "*****" + Long.toString(System.currentTimeMillis()) + "*****";
+            String lineEnd = "\r\n";
+
+            int bytesRead, bytesAvailable, bufferSize;
+            byte[] buffer;
+            int maxBufferSize = 1 * 1024 * 1024;
+            
+            String[] q = src.split("/");
+            int idx = q.length - 1;
+
+            Log.d("UPLOAD ASYNC TASK", "DO IN BACKGROUND");
+            try {
+                FileInputStream fis = new FileInputStream(file);
+                
+                URL url = new URL(strings[0]);
+                HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+                
+                huc.setReadTimeout(10000);
+                huc.setConnectTimeout(10000);
+
+                huc.setDoInput(true);
+                huc.setDoOutput(true);
+                huc.setUseCaches(false);
+
+                huc.setRequestMethod("POST");
+                huc.setRequestProperty("Connection", "Keep-Alive");
+                huc.setRequestProperty("User-Agent", "Android Multipart HTTP Client 1.0");
+                huc.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+                DataOutputStream os = new DataOutputStream(huc.getOutputStream());
+                os.writeBytes(twoHyphens + boundary + lineEnd);
+                os.writeBytes("Content-Disposition: form-data; name=\"" + "upload" + "\"; filename=\"" + q[idx] + "\"" + lineEnd);
+                os.writeBytes("Content-Type: " + "video/mp4" + lineEnd);
+                os.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
+                os.writeBytes(lineEnd);
+                
+                bytesAvailable = fis.available();
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                buffer = new byte[bufferSize];
+                
+                bytesRead = fis.read(buffer, 0, bufferSize);
+                while (bytesRead > 0) {
+                    os.write(buffer, 0, bufferSize);
+                    bytesAvailable = fis.available();
+                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    bytesRead = fis.read(buffer, 0, bufferSize);
+                }
+                os.writeBytes(lineEnd);
+                
+                Log.d("UPload", "------------------");
+                
+                // POST Param title
+                os.writeBytes(twoHyphens + boundary + lineEnd);
+                os.writeBytes("Content-Disposition: form-data; name=\"" + "title" + "\"" + lineEnd);
+                os.writeBytes("Content-Type: text/plain" + lineEnd);
+                os.writeBytes(lineEnd);
+                os.writeBytes(strings[1]);
+                os.writeBytes(lineEnd);
+
+                // POST Param uploader
+                os.writeBytes(twoHyphens + boundary + lineEnd);
+                os.writeBytes("Content-Disposition: form-data; name=\"" + "uploader" + "\"" + lineEnd);
+                os.writeBytes("Content-Type: text/plain" + lineEnd);
+                os.writeBytes(lineEnd);
+                os.writeBytes(strings[2]);
+                os.writeBytes(lineEnd);
+
+                // POST Param desc
+                os.writeBytes(twoHyphens + boundary + lineEnd);
+                os.writeBytes("Content-Disposition: form-data; name=\"" + "desc" + "\"" + lineEnd);
+                os.writeBytes("Content-Type: text/plain" + lineEnd);
+                os.writeBytes(lineEnd);
+                os.writeBytes(strings[3]);
+                os.writeBytes(lineEnd);
+                
+                os.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+                
+                fis.close();
+                os.flush();
+                os.close();
+
+                int responseCode = huc.getResponseCode();
+                Log.d("response", "code:" + responseCode);
+
+                InputStream is;
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    is = huc.getInputStream();
+                } else {
+                    is = huc.getErrorStream();
+                }
+
+                InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                br.close();
+                return sb.toString();
+            } catch (Exception e) {
+                Log.d("Upload Error", e.getMessage());
+                return "Error "+ e.getMessage();
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.d("ONPOST UPLOAD", s);
+            if (s.substring(0, 5).equalsIgnoreCase("Error")) {
+                Toast.makeText(getApplicationContext(), "File upload failed!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Upload completed!", Toast.LENGTH_LONG).show();
+                Intent resultIntent = new Intent();
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            }
+        }
+    } //AsyncTask
+    
+    
+    
 
     /*
      * from https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
