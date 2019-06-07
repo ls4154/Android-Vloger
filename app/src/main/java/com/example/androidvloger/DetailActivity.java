@@ -24,16 +24,16 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        imgThumbnail = (ImageView)findViewById(R.id.imgThumbnail);
-        imgHeart=(ImageView)findViewById(R.id.imgHeart);
-        tvTitle = (TextView)findViewById(R.id.tvTitle);
-        tvTop = (TextView)findViewById(R.id.tvTop);
-        tvHeartNum=(TextView)findViewById(R.id.tvHeartNum);
-        tvUsername=(TextView)findViewById(R.id.tvUsername);
-        tvUploadtime=(TextView)findViewById(R.id.tvUploadtime);
-        tvDesc=(TextView)findViewById(R.id.tvDesc);
-        recyclerView=(RecyclerView)findViewById(R.id.recyclerView);
-        etComment=(EditText)findViewById(R.id.etComment);
+        imgThumbnail = findViewById(R.id.imgThumbnail);
+        imgHeart = findViewById(R.id.imgHeart);
+        tvTitle = findViewById(R.id.tvTitle);
+        tvTop = findViewById(R.id.tvTop);
+        tvHeartNum = findViewById(R.id.tvHeartNum);
+        tvUsername = findViewById(R.id.tvUsername);
+        tvUploadtime = findViewById(R.id.tvUploadtime);
+        tvDesc = findViewById(R.id.tvDesc);
+        recyclerView = findViewById(R.id.recyclerView);
+        etComment = findViewById(R.id.etComment);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
