@@ -54,7 +54,7 @@ public class UserpageActivity extends AppCompatActivity {
         
         // 팔로잉수 팔로워수도 데베에서 읽어와서 처리하기
         GetData getData = new GetData();
-        getData.execute("http://" + IP_ADDR + "/get_user_vid.php", pageId);
+        getData.execute("http://" + IP_ADDR + "/get_userpage.php", pageId);
 
         refresh();
     }
@@ -142,7 +142,14 @@ public class UserpageActivity extends AppCompatActivity {
             Log.d("JSON", s);
             try {
                 JSONObject jo = new JSONObject(s);
-                JSONArray ja = jo.getJSONArray("users");
+                JSONArray ja = jo.getJSONArray("videos");
+
+                int cntFollower = jo.getInt("followers");
+                tvFollowersNum.setText("" + cntFollower);
+
+                int cntFollowing = jo.getInt("followings");
+                tvFollowingsNum.setText("" + cntFollowing);
+                
                 for (int i = 0; i < ja.length(); i++) {
                     String t1 = ja.getJSONObject(i).getString("id");
                     String t2 = ja.getJSONObject(i).getString("title");
@@ -150,9 +157,13 @@ public class UserpageActivity extends AppCompatActivity {
                     String t4 = ja.getJSONObject(i).getString("desc");
                     String t5 = ja.getJSONObject(i).getString("date");
                     
-                    
                     // 리스트에 추가한다 
                 }
+                
+                
+                
+                
+                
             } catch (Exception e) {
                 Log.d("JSON Parser", "Error");
             }

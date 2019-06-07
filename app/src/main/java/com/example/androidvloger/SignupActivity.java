@@ -84,11 +84,15 @@ public class SignupActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "ID should be less than 20 chars", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(strPw.length() > 20 || strPw.length() < 4){ // pw 길이가 20자 초과 or 4자 미만일때
+            if(strPw.length() > 20){ // pw 길이가 20자 초과
                 Toast.makeText(getApplicationContext(), "Password should be less than 20 chars", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(strName.length() > 20){ // name 길이가 20자 초과 or 4자 미만일때
+            if(strPw.length() < 4){ // pw 길이가 20자 초과 or 4자 미만일때
+                Toast.makeText(getApplicationContext(), "Password should be at least 4 chars", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(strName.length() > 20){ // name 길이가 20자 초과 
                 Toast.makeText(getApplicationContext(), "Name should be less than 20 chars", Toast.LENGTH_SHORT).show();
                 return;
             }
