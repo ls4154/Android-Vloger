@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,10 +51,19 @@ public class UploadActivity extends AppCompatActivity {
         btnUpload = findViewById(R.id.btn_up_up);
         
         btnUpload.setOnClickListener(uploadOnClickListener);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         userId = getIntent().getStringExtra("id");
     }
-    
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
     
 
     Button.OnClickListener uploadOnClickListener = new View.OnClickListener() {
@@ -118,6 +128,8 @@ public class UploadActivity extends AppCompatActivity {
         if (requestCode == 2222) {
             Uri uri = data.getData();
             String src = getPath(getApplicationContext(), uri);
+            
+            btnUpload.setEnabled(false);
             
             SendData task = new SendData();
             task.execute("http://" + IP_ADDR + "/upload_vid.php", etTitle.getText().toString(), userId, etDesc.getText().toString(), src);
@@ -254,6 +266,7 @@ public class UploadActivity extends AppCompatActivity {
             Log.d("ONPOST UPLOAD", s);
             if (s.substring(0, 5).equalsIgnoreCase("Error")) {
                 Toast.makeText(getApplicationContext(), "File upload failed!", Toast.LENGTH_LONG).show();
+                btnUpload.setEnabled(true);
             } else {
                 Toast.makeText(getApplicationContext(), "Upload completed!", Toast.LENGTH_LONG).show();
                 Intent resultIntent = new Intent();

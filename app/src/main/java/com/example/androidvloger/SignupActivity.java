@@ -99,6 +99,8 @@ public class SignupActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Description should be less than 75 chars", Toast.LENGTH_SHORT).show();
                 return;
             }
+            
+            btnSend.setEnabled(false);
             SendData task = new SendData();
             task.execute("http://" + IP_ADDR + "/insert2.php", strId, strName, strPw, strDesc);
         }
@@ -160,6 +162,7 @@ public class SignupActivity extends AppCompatActivity {
             super.onPostExecute(s);
             if (s.substring(0, 5).equalsIgnoreCase("Error")) {
                 Toast.makeText(getApplicationContext(), "ID alreay exists!", Toast.LENGTH_LONG).show();
+                btnSend.setEnabled(true);
             } else {
                 Toast.makeText(getApplicationContext(), "Sign up completed!", Toast.LENGTH_LONG).show();
                 Intent resultIntent = new Intent();

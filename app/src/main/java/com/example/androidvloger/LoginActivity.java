@@ -101,6 +101,8 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Password should be longer than 4 chars", Toast.LENGTH_SHORT).show();
                 return;
             }
+            
+            btnSend.setEnabled(false);
 
             LoginActivity.SendData task = new LoginActivity.SendData();
             task.execute("http://" + IP_ADDR + "/login.php", strId, strPw);
@@ -161,6 +163,7 @@ public class LoginActivity extends AppCompatActivity {
             super.onPostExecute(s);
             if (s.substring(0, 5).equalsIgnoreCase("Error")) {
                 Toast.makeText(getApplicationContext(), "Wrong account!", Toast.LENGTH_LONG).show();
+                btnSend.setEnabled(true);
             } else {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("id", etId.getText().toString());

@@ -2,6 +2,7 @@ package com.example.androidvloger;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +48,8 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
 
     final static int SEARCH_RC = 1113; // sign up request code
     final static int HOME_RC = 1114; // sign up request code
+    
+    boolean bufBack = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +104,24 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
 
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public void onBackPressed() {
+        if (bufBack) {
+            super.onBackPressed();
+            return;
+        }
 
+        bufBack = true;
+        Toast.makeText(this, "Click again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                bufBack = false;
+            }
+        }, 2000);
+    }
+    
     void refresh(){
         GetData getData = new GetData();
         getData.execute("http://" + IP_ADDR + "/get_userpage.php", pageId);
