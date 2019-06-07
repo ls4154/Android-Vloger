@@ -47,11 +47,12 @@ public class UserpageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userpage);
-        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        tvUsername = (TextView)findViewById(R.id.tvUsername);
-        tvFollowingsNum = (TextView)findViewById(R.id.tvFollowingsNum);
-        tvFollowersNum = (TextView)findViewById(R.id.tvFollowersNum);
-        tvUserDesc = (TextView)findViewById(R.id.tvUserDesc);
+        recyclerView = findViewById(R.id.recyclerView);
+        tvUsername = findViewById(R.id.tvUsername);
+        tvFollowingsNum = findViewById(R.id.tvFollowingsNum);
+        tvFollowersNum = findViewById(R.id.tvFollowersNum);
+        tvUserDesc = findViewById(R.id.tvUserDesc);
+        buttonFollow = findViewById(R.id.buttonFollow);
 
         thumblist = new ArrayList<>();
 
@@ -60,7 +61,11 @@ public class UserpageActivity extends AppCompatActivity {
         pageId = intent.getExtras().getString("pageid"); // page user id
         tvUsername.setText(pageId);
         
-        
+        // 본인 페이지면 팔로우 불가능 
+        if (userId.equals(pageId)) {
+            buttonFollow.setEnabled(false);
+        }
+
         // 팔로잉수 팔로워수도 데베에서 읽어와서 처리하기
         refresh();
     }
@@ -85,6 +90,7 @@ public class UserpageActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
+
         return super.onOptionsItemSelected(item);
     }
 
