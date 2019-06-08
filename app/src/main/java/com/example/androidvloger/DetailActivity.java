@@ -42,10 +42,13 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
     ConstraintLayout constraintLayout;
     final String IP_ADDR = "13.124.45.74";
     String videoId;
-    String userId;
+    String userId; // 로그인 유저
+    String uploaderId; // 비디오 올린 유저
     ArrayList<String[]> commentlist;
     SwipeRefreshLayout swipeRefreshLayout;
     DetailAdapter adapter;
+    
+    boolean liked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +82,13 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         
         // get extras
         Intent intent = getIntent();
-        videoId = intent.getExtras().getString("id");
+        videoId = intent.getStringExtra("vidid");
         userId = intent.getStringExtra("id");
         String path = "http://" + IP_ADDR + "/thumb" + videoId + ".jpg";
         Picasso.get().load(path).into(imgThumbnail);
+        
+        Log.d("extra id", videoId);
+        Log.d("extra uid", userId);
 
         // 댓글 가져오기
         refresh();
@@ -103,7 +109,18 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
     void onclickHeart(View view){
-
+        if (uploaderId == null || uploaderId.equals(userId)) {
+            Toast.makeText(getApplicationContext(), "It's your video :P", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        imgHeart.setEnabled(false);
+        if (!liked) {
+            SendData2 task = new SendData2();
+            task.execute("http://" + IP_ADDR + "/like.php", uploaderId, userId, videoId);
+        } else {
+            SendData3 task = new SendData3();
+            task.execute("http://" + IP_ADDR + "/unlike.php", videoId, userId);
+        }
     }
     
     void onClickComment(View view) {
@@ -136,7 +153,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
 
         @Override
         protected String doInBackground(String... strings) {
-            String postParams = "id=" + strings[1];
+            String postParams = "id=" + strings[1] + "&myid=" + strings[2];
             try {
                 URL url = new URL(strings[0]);
                 HttpURLConnection huc = (HttpURLConnection) url.openConnection();
@@ -195,10 +212,17 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
                 
                 //정보 가져오고 텍스트 셋
                 tvTitle.setText(jo.getString("title"));
-                tvUsername.setTag(jo.getString("id"));
                 tvDesc.setText(jo.getString("desc"));
                 tvUploadtime.setText(jo.getString("date"));
                 tvUsername.setText(jo.getString("name"));
+
+                uploaderId = jo.getString("id");
+                tvUsername.setTag(uploaderId);
+                
+                if (jo.getString("liked").equals("true")) {
+                    imgHeart.setImageResource(R.drawable.ic_heart_full);
+                    liked = true;
+                }
                 
             } catch (Exception e) {
                 Log.d("JSON Parser", "Error");
@@ -207,11 +231,10 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         }
     } // Asynctask
 
-    // 댓글 새로 가져오기
+    // 댓글, 동영상 정보, 좋아요 여부 가져오기
     void refresh(){
         GetData getData = new GetData();
-        //getData.execute("http://" + IP_ADDR + "/get_comments.php", videoId);
-        getData.execute("http://" + IP_ADDR + "/get_detail.php", videoId);
+        getData.execute("http://" + IP_ADDR + "/get_detail.php", videoId, userId);
     }
 
     // 댓글 어댑터 리로드
@@ -296,4 +319,132 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
             btnComment.setEnabled(true);
         }
     }
+
+    // 좋아요
+    class SendData2 extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String postParams = "id=" + strings[1] + "&myid=" + strings[2] + "&vidid=" + strings[3];
+
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+                huc.setReadTimeout(5000);
+                huc.setConnectTimeout(5000);
+                huc.setRequestMethod("POST");
+                huc.connect();
+
+                OutputStream os = huc.getOutputStream();
+                os.write(postParams.getBytes("UTF-8"));
+                os.flush();
+                os.close();
+
+                int responseCode = huc.getResponseCode();
+                //Log.d("response", "code:" + responseCode);
+
+                InputStream is;
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    is = huc.getInputStream();
+                } else {
+                    is = huc.getErrorStream();
+                }
+
+                InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                br.close();
+                return sb.toString();
+            } catch (Exception e) {
+                return "Error: "+ e.getMessage();
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (s.substring(0, 5).equalsIgnoreCase("Error")) {
+                Toast.makeText(getApplicationContext(), "Error occured! Try agiain.", Toast.LENGTH_SHORT).show();
+            } else {
+                imgHeart.setImageResource(R.drawable.ic_heart_full);
+                Toast.makeText(getApplicationContext(), "Liked", Toast.LENGTH_SHORT).show();
+                liked = true;
+            }
+            imgHeart.setEnabled(true);
+        }
+    } // Asynctask Send
+
+    // 좋아요 취소
+    class SendData3 extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String postParams = "vidid=" + strings[1] + "&myid=" + strings[2];
+
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+                huc.setReadTimeout(5000);
+                huc.setConnectTimeout(5000);
+                huc.setRequestMethod("POST");
+                huc.connect();
+
+                OutputStream os = huc.getOutputStream();
+                os.write(postParams.getBytes("UTF-8"));
+                os.flush();
+                os.close();
+
+                int responseCode = huc.getResponseCode();
+                //Log.d("response", "code:" + responseCode);
+
+                InputStream is;
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    is = huc.getInputStream();
+                } else {
+                    is = huc.getErrorStream();
+                }
+
+                InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                br.close();
+                return sb.toString();
+            } catch (Exception e) {
+                return "Error: "+ e.getMessage();
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (s.substring(0, 5).equalsIgnoreCase("Error")) {
+                Toast.makeText(getApplicationContext(), "Error occured! Try agiain.", Toast.LENGTH_SHORT).show();
+            } else {
+                imgHeart.setImageResource(R.drawable.ic_heart_empty);
+                Toast.makeText(getApplicationContext(), "Unliked", Toast.LENGTH_SHORT).show();
+                liked = false;
+            }
+            imgHeart.setEnabled(true);
+        }
+    } // Asynctask Send
 }

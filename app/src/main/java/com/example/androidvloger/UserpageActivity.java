@@ -164,6 +164,20 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
         startActivity(intent);
     }
 
+    public void onclickUpload(View view) {
+        Intent intent = new Intent(getBaseContext(), UploadActivity.class);
+        intent.putExtra("id", userId);
+        startActivityForResult(intent, UPLOAD_RC);
+    }
+
+    public void onclickGotoDetail(View view){
+        Intent intent = new Intent(this, DetailActivity.class);
+        String t = (String)view.getTag();
+        intent.putExtra("vidid",t);
+        intent.putExtra("id", userId);
+        startActivity(intent);
+    }
+
     class GetData extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -381,19 +395,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
         }
     } // Asynctask Send
 
-    public void onclickUpload(View view) {
-        Intent intent = new Intent(getBaseContext(), UploadActivity.class);
-        intent.putExtra("id", userId);
-        startActivityForResult(intent, UPLOAD_RC);
-    }
-
-    public void onclickGotoDetail(View view){
-        Intent intent = new Intent(this, DetailActivity.class);
-        String t = (String)view.getTag();
-        intent.putExtra("id",t);
-        intent.putExtra("id", userId);
-        startActivity(intent);
-    }
+    
 
     @Override
     public void onRefresh() {
