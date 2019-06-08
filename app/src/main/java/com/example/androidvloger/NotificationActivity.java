@@ -16,6 +16,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class NotificationActivity extends AppCompatActivity {
     final String IP_ADDR = "13.124.45.74";
@@ -96,33 +97,46 @@ public class NotificationActivity extends AppCompatActivity {
             try {
                 JSONObject jo = new JSONObject(s);
                 
+                ArrayList<NotificationItem> notiList = new ArrayList<>();
+                
                 // 내 영상에 댓글
                 JSONArray ja = jo.getJSONArray("comments");
                 for (int i = ja.length()-1; i >= 0; i--) {
-                    String[] t = new String[4];
-                    t[0] = ja.getJSONObject(i).getString("id"); // 동영상 id
-                    t[1] = ja.getJSONObject(i).getString("date"); // 댓글쓴 날짜
-                    t[2] = ja.getJSONObject(i).getString("name"); // 댓글쓴 사람 이름
-                    t[3] = ja.getJSONObject(i).getString("content"); // 댓글 내용
+                    notiList.add(new NotificationItem(
+                        ja.getJSONObject(i).getString("id"), // 동영상 id
+                        ja.getJSONObject(i).getString("date"), // 댓글쓴 날짜
+                        ja.getJSONObject(i).getString("name"), // 댓글쓴 사람 이름
+                        ja.getJSONObject(i).getString("content"), // 댓글 내용
+                        0
+                    ));
                 }
                 // 팔로워 영상
                 ja = jo.getJSONArray("videos");
                 for (int i = ja.length()-1; i >= 0; i--) {
-                    String[] t = new String[4];
-                    t[0] = ja.getJSONObject(i).getString("id"); // 동영상 id
-                    t[1] = ja.getJSONObject(i).getString("date"); // 올린 날짜
-                    t[2] = ja.getJSONObject(i).getString("name"); // 업로더 이름 
-                    t[3] = ja.getJSONObject(i).getString("title"); // 제목
+                    notiList.add(new NotificationItem(
+                        ja.getJSONObject(i).getString("id"), // 동영상 id
+                        ja.getJSONObject(i).getString("date"), // 올린 날짜
+                        ja.getJSONObject(i).getString("name"), // 업로더 이름 
+                        ja.getJSONObject(i).getString("title"), // 제목
+                        1
+                    ));
                 }
                 // 내 영상에 좋아요
                 ja = jo.getJSONArray("likes");
                 for (int i = ja.length()-1; i >= 0; i--) {
-                    String[] t = new String[4];
-                    t[0] = ja.getJSONObject(i).getString("id"); // 동영상 id
-                    t[1] = ja.getJSONObject(i).getString("date"); // 좋아요 날짜
-                    t[2] = ja.getJSONObject(i).getString("name"); // 좋아요 한 사람 이름 
-                    t[3] = ja.getJSONObject(i).getString("title"); // 제목
+                    notiList.add(new NotificationItem(
+                        ja.getJSONObject(i).getString("id"), // 동영상 id
+                        ja.getJSONObject(i).getString("date"), // 좋아요 날짜
+                        ja.getJSONObject(i).getString("name"), // 좋아요 한 사람 이름 
+                        ja.getJSONObject(i).getString("title"), // 제목
+                        2
+                    ));
                 }
+                
+                Collections.sort(notiList);
+                // 어댑터로 넘겨 주기
+                
+                Log.d("notilist", "size " + notiList.size());
                 
             } catch (Exception e) {
                 Log.d("JSON Parser", "Error");
