@@ -74,6 +74,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
         // 본인 페이지면 팔로우 불가능 
         if (userId.equals(pageId)) {
             buttonFollow.setEnabled(false);
+            buttonFollow.setText("MyPage");
         }
 
         // 팔로잉수 팔로워수도 데베에서 읽어와서 처리하기
@@ -124,7 +125,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
     
     void refresh(){
         GetData getData = new GetData();
-        getData.execute("http://" + IP_ADDR + "/get_userpage.php", pageId);
+        getData.execute("http://" + IP_ADDR + "/get_userpage.php", pageId, userId);
     }
 
     void refreshUI(){
@@ -160,7 +161,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
 
         @Override
         protected String doInBackground(String... strings) {
-            String postParams = "id=" + strings[1];
+            String postParams = "id=" + strings[1] + "&myid=" +strings[2];
             try {
                 URL url = new URL(strings[0]);
                 HttpURLConnection huc = (HttpURLConnection) url.openConnection();
@@ -206,7 +207,10 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
             Log.d("JSON", s);
             try {
                 JSONObject jo = new JSONObject(s);
-                JSONArray ja = jo.getJSONArray("videos");
+                
+                if (jo.getString("follow").equals("true")) {
+                    buttonFollow.setText("Following");
+                }
 
                 int cntFollower = jo.getInt("followers");
                 tvFollowersNum.setText("" + cntFollower);
@@ -218,6 +222,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
                 
                 tvUserDesc.setText(jo.getString("desc"));
 
+                JSONArray ja = jo.getJSONArray("videos");
                 thumblist = new ArrayList<>();
                 for (int i = ja.length()-1; i >= 0; i--) {
                     String[] t = new String[6];
