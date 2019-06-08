@@ -79,7 +79,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         
         // get extras
         Intent intent = getIntent();
-        videoId = intent.getExtras().getString("vidId");
+        videoId = intent.getExtras().getString("id");
         userId = intent.getStringExtra("id");
         String path = "http://" + IP_ADDR + "/thumb" + videoId + ".jpg";
         Picasso.get().load(path).into(imgThumbnail);

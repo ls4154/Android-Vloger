@@ -178,6 +178,18 @@ public class NotificationActivity extends AppCompatActivity implements SwipeRefr
                         2
                     ));
                 }
+                // 나를 팔로우
+                ja = jo.getJSONArray("follow");
+                for (int i = ja.length()-1; i >= 0; i--) {
+                    notiList.add(new NotificationItem(
+                            ja.getJSONObject(i).getString("id"), // 팔로우 한 사람 id
+                            ja.getJSONObject(i).getString("date"), // 팔로우 날짜
+                            ja.getJSONObject(i).getString("name"), // 팔로우 한 사람 이름 
+                            null, // 제목은 없음
+                            3
+                    ));
+                }
+                
                 
                 Collections.sort(notiList);
                 int notiSize = min(notiList.size(),20);

@@ -3,7 +3,6 @@ package com.example.androidvloger;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +41,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         else if(item.type==2) content = "좋아요를 눌렀습니다";
         else if(item.type==3) content = "팔로우했습니다";
         holder.tvContent.setText(content);
-        String path = "http://"+IP_ADDR+"/thumb"+item.vidId+".jpg";
-        Picasso.get().load(path).into(holder.imgThumbnail);
-        holder.constraintLayout.setTag(item.vidId);
+        
+        if (item.type == 3) {
+            holder.imgThumbnail.setImageResource(R.drawable.ic_followers);
+        } else {
+            String path = "http://" + IP_ADDR + "/thumb" + item.id + ".jpg";
+            Picasso.get().load(path).into(holder.imgThumbnail);
+        }
+        holder.constraintLayout.setTag(item.id);
     }
 
     public class Holder extends RecyclerView.ViewHolder {

@@ -390,7 +390,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
     public void onclickGotoDetail(View view){
         Intent intent = new Intent(this, DetailActivity.class);
         String t = (String)view.getTag();
-        intent.putExtra("vidId",t);
+        intent.putExtra("id",t);
         intent.putExtra("id", userId);
         startActivity(intent);
     }
