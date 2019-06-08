@@ -67,16 +67,8 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        String[] t = intent.getExtras().getStringArray("info");
+        videoId = intent.getExtras().getString("vidId");
         userId = intent.getStringExtra("id");
-
-        videoId = t[0];
-        tvTitle.setText(t[1]);
-        tvUsername.setTag(t[2]);
-        tvDesc.setText(t[3]);
-        tvUploadtime.setText(t[4]);
-        tvUsername.setText(t[5]);
-
         String path = "http://" + IP_ADDR + "/thumb" + videoId + ".jpg";
         Picasso.get().load(path).into(imgThumbnail);
 
@@ -199,6 +191,14 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
     void refreshUI(){
+        // TODO
+        // vidId만 가지고 정보가져온다음에 setText하기
+//        tvTitle.setText(t[1]);
+//        tvUsername.setTag(t[2]);
+//        tvDesc.setText(t[3]);
+//        tvUploadtime.setText(t[4]);
+//        tvUsername.setText(t[5]);
+
         adapter = new DetailAdapter(commentlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

@@ -2,8 +2,13 @@ package com.example.androidvloger;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -17,19 +22,29 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-public class NotificationActivity extends AppCompatActivity {
+import static java.lang.Math.min;
+
+public class NotificationActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
     final String IP_ADDR = "13.124.45.74";
     String userId;
+    ArrayList<NotificationItem> notiList;
+    NotificationAdapter adapter;
+    RecyclerView recyclerView;
+    SwipeRefreshLayout swipeRefreshLayout;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
-        
+        recyclerView = findViewById(R.id.recyclerView);
+
         Intent intent = getIntent();
         userId = intent.getStringExtra("id");
-        
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         refresh(); // 알림 가져오고 UI 리셋
     }
     
@@ -39,7 +54,21 @@ public class NotificationActivity extends AppCompatActivity {
     }
     
     void refreshUI() {
-        
+        adapter = new NotificationAdapter(notiList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+
+    public void onRefresh() {
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refresh();
+                Snackbar.make(recyclerView,"Refresh Success",Snackbar.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        },500);
     }
 
     class GetData extends AsyncTask<String, Void, String> {
@@ -97,7 +126,7 @@ public class NotificationActivity extends AppCompatActivity {
             try {
                 JSONObject jo = new JSONObject(s);
                 
-                ArrayList<NotificationItem> notiList = new ArrayList<>();
+                notiList = new ArrayList<>();
                 
                 // 내 영상에 댓글
                 JSONArray ja = jo.getJSONArray("comments");
@@ -134,14 +163,15 @@ public class NotificationActivity extends AppCompatActivity {
                 }
                 
                 Collections.sort(notiList);
-                // 어댑터로 넘겨 주기
-                
+                int notiSize = min(notiList.size(),20);
+                notiList = new ArrayList<> (notiList.subList(0,notiSize));
+                refreshUI();
+
                 Log.d("notilist", "size " + notiList.size());
                 
             } catch (Exception e) {
                 Log.d("JSON Parser", "Error");
             }
-            refreshUI();
         }
     } // Asynctask
 }

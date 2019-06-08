@@ -33,6 +33,11 @@ import java.util.ArrayList;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
+// TODO
+// 로그아웃
+// 커멘트 보내고 나서 소프트키보드 숨기기
+// 뒤로가기버튼
+
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     VideoView vv;
@@ -159,8 +164,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     public void onclickGotoDetail(View view){
         Intent intent = new Intent(this, DetailActivity.class);
-        String[] t = (String[])view.getTag();
-        intent.putExtra("info",t);
+        String t = (String)view.getTag();
+        intent.putExtra("vidId",t);
         intent.putExtra("id", userId);
         startActivity(intent);
     }

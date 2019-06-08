@@ -19,6 +19,6 @@ public class NotificationItem implements Comparable<NotificationItem>{
     
     @Override
     public int compareTo(@NonNull NotificationItem o) {
-        return date.compareToIgnoreCase(o.date); // 오름차순인데 반대로 하려면 바꾸기
+        return -date.compareToIgnoreCase(o.date); // 오름차순인데 반대로 하려면 바꾸기
     }
 }
