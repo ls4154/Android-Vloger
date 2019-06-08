@@ -70,6 +70,13 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        
+        // 처음에 테스트용 텍스트 다 날리기
+        tvTitle.setText("");
+        tvDesc.setText("");
+        tvUploadtime.setText("");
+        tvUsername.setText("");
+        
         // get extras
         Intent intent = getIntent();
         videoId = intent.getExtras().getString("vidId");
@@ -77,8 +84,8 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         String path = "http://" + IP_ADDR + "/thumb" + videoId + ".jpg";
         Picasso.get().load(path).into(imgThumbnail);
 
-        refresh();
         // 댓글 가져오기
+        refresh();
     }
 
     @Override
@@ -186,6 +193,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
                     commentlist.add(t);
                 }
                 
+                //정보 가져오고 텍스트 셋
                 tvTitle.setText(jo.getString("title"));
                 tvUsername.setTag(jo.getString("id"));
                 tvDesc.setText(jo.getString("desc"));
@@ -208,14 +216,6 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
 
     // 댓글 어댑터 리로드
     void refreshUI(){
-        // TODO
-        // vidId만 가지고 정보가져온다음에 setText하기
-//        tvTitle.setText(t[1]);
-//        tvUsername.setTag(t[2]);
-//        tvDesc.setText(t[3]);
-//        tvUploadtime.setText(t[4]);
-//        tvUsername.setText(t[5]);
-
         adapter = new DetailAdapter(commentlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
