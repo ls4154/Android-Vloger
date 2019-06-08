@@ -208,6 +208,14 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
 
     // 댓글 어댑터 리로드
     void refreshUI(){
+        // TODO
+        // vidId만 가지고 정보가져온다음에 setText하기
+//        tvTitle.setText(t[1]);
+//        tvUsername.setTag(t[2]);
+//        tvDesc.setText(t[3]);
+//        tvUploadtime.setText(t[4]);
+//        tvUsername.setText(t[5]);
+
         adapter = new DetailAdapter(commentlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

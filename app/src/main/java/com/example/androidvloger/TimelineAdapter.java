@@ -39,7 +39,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Holder
         holder.tvUploader.setText(item[5]);
         holder.tvUploadTime.setText(item[4]);
         Picasso.get().load(path).into(holder.imgThumbnail);
-        holder.constraintLayout.setTag(item);
+        holder.constraintLayout.setTag(item[0]);
     }
 
     public class Holder extends RecyclerView.ViewHolder {
