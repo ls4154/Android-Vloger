@@ -50,6 +50,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
     final static int HOME_RC = 1114; // sign up request code
     
     boolean bufBack = false;
+    boolean following = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,6 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
         
         // 본인 페이지면 팔로우 불가능 
         if (userId.equals(pageId)) {
-            buttonFollow.setEnabled(false);
             buttonFollow.setText("MyPage");
         }
 
@@ -136,7 +136,18 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     void onclickFollow(View view){
-
+        if (userId.equals(pageId)) {
+            Toast.makeText(getApplicationContext(), "It's you! :P", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        buttonFollow.setEnabled(false);
+        if (!following) {
+            SendData task = new SendData();
+            task.execute("http://" + IP_ADDR + "/follow.php", pageId, userId);
+        } else {
+            SendData2 task = new SendData2();
+            task.execute("http://" + IP_ADDR + "/unfollow.php", pageId, userId);
+        }
     }
 
     public void onclickGotoTimeline(View view){
@@ -210,6 +221,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
                 
                 if (jo.getString("follow").equals("true")) {
                     buttonFollow.setText("Following");
+                    following = true;
                 }
 
                 int cntFollower = jo.getInt("followers");
@@ -239,7 +251,135 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
             }
             refreshUI();
         }
-    } // Asynctask
+    } // Asynctask Get
+
+    // 팔로우
+    class SendData extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String postParams = "id=" + strings[1] + "&myid=" + strings[2];
+
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+                huc.setReadTimeout(5000);
+                huc.setConnectTimeout(5000);
+                huc.setRequestMethod("POST");
+                huc.connect();
+
+                OutputStream os = huc.getOutputStream();
+                os.write(postParams.getBytes("UTF-8"));
+                os.flush();
+                os.close();
+
+                int responseCode = huc.getResponseCode();
+                //Log.d("response", "code:" + responseCode);
+
+                InputStream is;
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    is = huc.getInputStream();
+                } else {
+                    is = huc.getErrorStream();
+                }
+
+                InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                br.close();
+                return sb.toString();
+            } catch (Exception e) {
+                return "Error: "+ e.getMessage();
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (s.substring(0, 5).equalsIgnoreCase("Error")) {
+                Toast.makeText(getApplicationContext(), "Error occured! Try agiain.", Toast.LENGTH_SHORT).show();
+            } else {
+                buttonFollow.setText("Following");
+                Toast.makeText(getApplicationContext(), "Followed", Toast.LENGTH_SHORT).show();
+
+            }
+            buttonFollow.setEnabled(true);
+        }
+    } // Asynctask Send
+
+    // 언팔로우
+    class SendData2 extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String postParams = "id=" + strings[1] + "&myid=" + strings[2];
+
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+                huc.setReadTimeout(5000);
+                huc.setConnectTimeout(5000);
+                huc.setRequestMethod("POST");
+                huc.connect();
+
+                OutputStream os = huc.getOutputStream();
+                os.write(postParams.getBytes("UTF-8"));
+                os.flush();
+                os.close();
+
+                int responseCode = huc.getResponseCode();
+                //Log.d("response", "code:" + responseCode);
+
+                InputStream is;
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    is = huc.getInputStream();
+                } else {
+                    is = huc.getErrorStream();
+                }
+
+                InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                br.close();
+                return sb.toString();
+            } catch (Exception e) {
+                return "Error: "+ e.getMessage();
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (s.substring(0, 5).equalsIgnoreCase("Error")) {
+                Toast.makeText(getApplicationContext(), "Error occured! Try agiain.", Toast.LENGTH_SHORT).show();
+            } else {
+                buttonFollow.setText("Follow");
+                Toast.makeText(getApplicationContext(), "Unfollowed", Toast.LENGTH_SHORT).show();
+
+            }
+            buttonFollow.setEnabled(true);
+        }
+    } // Asynctask Send
 
     public void onclickUpload(View view) {
         Intent intent = new Intent(getBaseContext(), UploadActivity.class);
