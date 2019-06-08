@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,10 +28,28 @@ public class NotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         
+        // find views
+        
+        // get extras
         Intent intent = getIntent();
         userId = intent.getStringExtra("id");
+
+        // 뒤로가기
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // 툴바 이름
+        getSupportActionBar().setTitle("What's new?");
         
-        refresh(); // 알림 가져오고 UI 리셋
+        // 알림 가져오고 UI 리셋
+        refresh(); 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
     
     void refresh() {

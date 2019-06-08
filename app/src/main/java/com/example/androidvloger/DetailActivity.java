@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,6 +37,8 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
     TextView tvTitle, tvTop, tvHeartNum, tvUsername, tvUploadtime, tvDesc;
     RecyclerView recyclerView;
     EditText etComment;
+    Button btnComment;
+    
     ConstraintLayout constraintLayout;
     final String IP_ADDR = "13.124.45.74";
     String videoId;
@@ -60,16 +63,19 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         recyclerView =  findViewById(R.id.recyclerView);
         etComment = findViewById(R.id.etComment);
         constraintLayout = findViewById(R.id.constraintLayout);
+        btnComment = findViewById(R.id.buttonComment);
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
-
+        
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // get extras
         Intent intent = getIntent();
         String[] t = intent.getExtras().getStringArray("info");
         userId = intent.getStringExtra("id");
 
+        // video id 만으로 이페이지를 intent 하는 경우 나머진 empty string 주세요 댓글이랑 가져오고 다시 갱신함
         videoId = t[0];
         tvTitle.setText(t[1]);
         tvUsername.setTag(t[2]);
@@ -108,6 +114,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
             return;
         }
         
+        btnComment.setEnabled(false);
         SendData task = new SendData();
         task.execute("http://" + IP_ADDR + "/add_comment.php", userId, videoId, etComment.getText().toString());
     }
@@ -122,6 +129,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         startActivity(intent);
     }
 
+    // 동영상 정보 및 댓글 가져오기 
     class GetData extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -186,6 +194,13 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
                     t[2] = ja.getJSONObject(i).getString("content"); // 댓글 내용
                     commentlist.add(t);
                 }
+                
+                tvTitle.setText(jo.getString("title"));
+                tvUsername.setTag(jo.getString("id"));
+                tvDesc.setText(jo.getString("desc"));
+                tvUploadtime.setText(jo.getString("date"));
+                tvUsername.setText(jo.getString("name"));
+                
             } catch (Exception e) {
                 Log.d("JSON Parser", "Error");
             }
@@ -193,11 +208,14 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         }
     } // Asynctask
 
+    // 댓글 새로 가져오기
     void refresh(){
         GetData getData = new GetData();
-        getData.execute("http://" + IP_ADDR + "/get_comments.php", videoId);
+        //getData.execute("http://" + IP_ADDR + "/get_comments.php", videoId);
+        getData.execute("http://" + IP_ADDR + "/get_detail.php", videoId);
     }
 
+    // 댓글 어댑터 리로드
     void refreshUI(){
         adapter = new DetailAdapter(commentlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -215,6 +233,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         },500);
     }
 
+    // 댓글 전송 Task
     class SendData extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -226,8 +245,6 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
             String postParams = "iduser=" + strings[1] + "&idvideos=" + strings[2] +
                     "&content=" + strings[3];
 
-            Log.d("COMMENT", postParams);
-            Log.d("ASYNC TASK", "DO IN BACKGROUND");
             try {
                 URL url = new URL(strings[0]);
                 HttpURLConnection huc = (HttpURLConnection) url.openConnection();
@@ -242,7 +259,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
                 os.close();
 
                 int responseCode = huc.getResponseCode();
-                Log.d("response", "code:" + responseCode);
+                //Log.d("response", "code:" + responseCode);
 
                 InputStream is;
                 if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -262,7 +279,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
                 br.close();
                 return sb.toString();
             } catch (Exception e) {
-                return "Error "+ e.getMessage();
+                return "Error: "+ e.getMessage();
             }
 
         }
@@ -271,12 +288,13 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if (s.substring(0, 5).equalsIgnoreCase("Error")) {
-                Toast.makeText(getApplicationContext(), "Error occured!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error occured! Try agiain.", Toast.LENGTH_LONG).show();
             } else {
                 // 댓글 추가됐으니 리프레시
                 etComment.setText("");
                 refresh();
             }
+            btnComment.setEnabled(true);
         }
     }
 }
