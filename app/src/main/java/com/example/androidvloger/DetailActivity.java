@@ -53,6 +53,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
     DetailAdapter adapter;
     
     boolean liked = false;
+    int likeCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         tvDesc.setText("");
         tvUploadtime.setText("");
         tvUsername.setText("");
+        tvHeartNum.setText("0 likes");
         
         // get extras
         Intent intent = getIntent();
@@ -242,6 +244,9 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
                 tvDesc.setText(jo.getString("desc"));
                 tvUploadtime.setText(jo.getString("date"));
                 tvUsername.setText(jo.getString("name"));
+                
+                likeCount = jo.getInt("likes");
+                tvHeartNum.setText(likeCount + " likes");
 
                 uploaderId = jo.getString("id");
                 tvUsername.setTag(uploaderId);
@@ -407,6 +412,8 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
                 imgHeart.setImageResource(R.drawable.ic_heart_full);
                 Toast.makeText(getApplicationContext(), "Liked", Toast.LENGTH_SHORT).show();
                 liked = true;
+                likeCount++;
+                tvHeartNum.setText(likeCount + " likes");
             }
             imgHeart.setEnabled(true);
         }
@@ -471,6 +478,8 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
                 imgHeart.setImageResource(R.drawable.ic_heart_empty);
                 Toast.makeText(getApplicationContext(), "Unliked", Toast.LENGTH_SHORT).show();
                 liked = false;
+                likeCount--;
+                tvHeartNum.setText(likeCount + " likes");
             }
             imgHeart.setEnabled(true);
         }
