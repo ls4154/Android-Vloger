@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -86,6 +87,16 @@ public class NotificationActivity extends AppCompatActivity implements SwipeRefr
                 swipeRefreshLayout.setRefreshing(false);
             }
         },500);
+    }
+
+    public void onclickGotoDetail(View view){
+        String t = (String)view.getTag();
+        if (t == null) return;
+
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("vidid",t);
+        intent.putExtra("id", userId);
+        startActivity(intent);
     }
 
     class GetData extends AsyncTask<String, Void, String> {

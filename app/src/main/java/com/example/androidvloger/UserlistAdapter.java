@@ -34,14 +34,16 @@ public class UserlistAdapter extends RecyclerView.Adapter<UserlistAdapter.Holder
     public void onBindViewHolder(Holder holder, int position) {
         Pair<String,String> item = list.get(position);
         holder.tvUsername.setText(item.second);
-        holder.constraintLayout.setTag(item);
+        holder.tvUserId.setText(item.first);
+        holder.constraintLayout.setTag(item.first);
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        TextView tvUsername;
+        TextView tvUsername, tvUserId;
         ConstraintLayout constraintLayout;
         Holder(View itemView) {
             super(itemView);
+            tvUserId = itemView.findViewById(R.id.tvUserId);
             tvUsername = itemView.findViewById(R.id.tvUsername);
             constraintLayout = itemView.findViewById(R.id.constraintLayout);
         }

@@ -137,13 +137,10 @@ public class UserlistActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    void onclickFollow(View view){
-    }
-
     void onclickGotoUserpage(View view){
         Intent intent = new Intent(getBaseContext(), UserpageActivity.class);
         intent.putExtra("id", userId);
-        String pageId = ((Pair<String,String>)view.getTag()).first;
+        String pageId = (String)view.getTag();
         intent.putExtra("pageid", pageId);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
