@@ -126,13 +126,15 @@ public class UploadActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 2222) {
-            Uri uri = data.getData();
-            String src = getPath(getApplicationContext(), uri);
-            
-            btnUpload.setEnabled(false);
-            
-            SendData task = new SendData();
-            task.execute("http://" + IP_ADDR + "/upload_vid.php", etTitle.getText().toString(), userId, etDesc.getText().toString(), src);
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
+                String src = getPath(getApplicationContext(), uri);
+
+                btnUpload.setEnabled(false);
+
+                SendData task = new SendData();
+                task.execute("http://" + IP_ADDR + "/upload_vid.php", etTitle.getText().toString(), userId, etDesc.getText().toString(), src);
+            }
         }
     }
 

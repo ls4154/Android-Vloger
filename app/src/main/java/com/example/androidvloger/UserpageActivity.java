@@ -185,6 +185,8 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 3737) {
             refresh();
+        } else if (requestCode == UPLOAD_RC) {
+            refresh();
         }
     }
 
