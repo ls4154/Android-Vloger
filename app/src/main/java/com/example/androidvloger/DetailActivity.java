@@ -1,5 +1,6 @@
 package com.example.androidvloger;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.util.Pair;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -126,6 +128,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
     }
     
     void onClickComment(View view) {
+        hideKeyboard(view);
         if (etComment.getText().equals("")) {
             Toast.makeText(getApplicationContext(), "Type comment first", Toast.LENGTH_SHORT).show();
             return;
@@ -134,6 +137,18 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         btnComment.setEnabled(false);
         SendData task = new SendData();
         task.execute("http://" + IP_ADDR + "/add_comment.php", userId, videoId, etComment.getText().toString());
+    }
+
+    void hideKeyboard(View view) {
+        try{
+            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            View currentFocusedView = this.getCurrentFocus();
+            if (currentFocusedView != null) {
+                inputManager.hideSoftInputFromWindow(currentFocusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     void onclickGotoUserpage(View view){

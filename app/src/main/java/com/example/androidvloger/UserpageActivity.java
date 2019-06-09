@@ -36,6 +36,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
     final String IP_ADDR = "13.124.45.74";
     String userId;
     String pageId;
+    String pagename;
 
     final static int UPLOAD_RC = 1115; // sign up request code
 
@@ -178,6 +179,26 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
         startActivity(intent);
     }
 
+    public void onclickGotoFollowings(View view){
+        int type = 0;
+        Intent intent = new Intent(this, FollowActivity.class);
+        intent.putExtra("type", type);
+        intent.putExtra("id", userId);
+        intent.putExtra("pagename", pagename);
+        intent.putExtra("pageid", pageId);
+        startActivity(intent);
+    }
+
+    public void onclickGotoFollowers(View view){
+        int type = 1;
+        Intent intent = new Intent(this, FollowActivity.class);
+        intent.putExtra("type", type);
+        intent.putExtra("pagename", pagename);
+        intent.putExtra("id", userId);
+        intent.putExtra("pageid", pageId);
+        startActivity(intent);
+    }
+
     class GetData extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -245,6 +266,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
                 tvFollowingsNum.setText("" + cntFollowing);
                 
                 tvUsername.setText(jo.getString("name"));
+                pagename = jo.getString("name");
                 
                 tvUserDesc.setText(jo.getString("desc"));
 

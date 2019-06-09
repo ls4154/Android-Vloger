@@ -1,5 +1,6 @@
 package com.example.androidvloger;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -119,6 +121,7 @@ public class UserlistActivity extends AppCompatActivity {
     } // Asynctask
 
     void onclickSearch(View view){ // xml에 buttonSearch onclick으로 돼있음
+        hideKeyboard(view);
         searchResult = new ArrayList<>();
         String keyword = etSearch.getText().toString();
         for(Pair<String, String> user : userList){
@@ -146,4 +149,17 @@ public class UserlistActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+    void hideKeyboard(View view) {
+        try{
+            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            View currentFocusedView = this.getCurrentFocus();
+            if (currentFocusedView != null) {
+                inputManager.hideSoftInputFromWindow(currentFocusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }

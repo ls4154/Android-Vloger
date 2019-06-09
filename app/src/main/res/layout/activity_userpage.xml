@@ -73,7 +73,8 @@
         app:layout_constraintStart_toStartOf="@id/tvFollowings"
         app:layout_constraintEnd_toStartOf="@id/tvFollowersNum"
         app:layout_constraintHeight_percent="0.08"
-        android:text="156" />
+        android:text="156"
+        android:onClick="onclickGotoFollowings"/>
 
     <TextView
         android:id="@+id/tvFollowersNum"
@@ -85,7 +86,8 @@
         app:layout_constraintStart_toStartOf="@id/tvFollowers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.08"
-        android:text="1988" />
+        android:text="1988"
+        android:onClick="onclickGotoFollowers"/>
 
     <TextView
         android:id="@+id/tvUserDesc"
