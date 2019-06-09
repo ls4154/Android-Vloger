@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Pair;
 import android.view.View;
@@ -38,6 +39,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
     RecyclerView recyclerView;
     EditText etComment;
     Button btnComment;
+    Menu mmenu;
     
     ConstraintLayout constraintLayout;
     final String IP_ADDR = "13.124.45.74";
@@ -93,13 +95,23 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         // 댓글 가져오기
         refresh();
     }
-    
-    
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        mmenu = menu;
+        menu.findItem(R.id.action_detail_del).setVisible(false);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
+        } else if (item.getItemId() == R.id.action_detail_del) {
+            SendData4 task = new SendData4();
+            task.execute("http://" + IP_ADDR + "/delete_vid.php", videoId);
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -202,7 +214,6 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
             try {
                 JSONObject jo = new JSONObject(s);
                 JSONArray ja = jo.getJSONArray("comments");
-
                 commentlist = new ArrayList<>();
                 for (int i = ja.length()-1; i >= 0; i--) {
                     String[] t = new String[3];
@@ -211,7 +222,6 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
                     t[2] = ja.getJSONObject(i).getString("content"); // 댓글 내용
                     commentlist.add(t);
                 }
-                
                 //정보 가져오고 텍스트 셋
                 tvTitle.setText(jo.getString("title"));
                 tvDesc.setText(jo.getString("desc"));
@@ -220,14 +230,15 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
 
                 uploaderId = jo.getString("id");
                 tvUsername.setTag(uploaderId);
-                
+                if (uploaderId.equals(userId)) {
+                    mmenu.findItem(R.id.action_detail_del).setVisible(true);
+                }
                 if (jo.getString("liked").equals("true")) {
                     imgHeart.setImageResource(R.drawable.ic_heart_full);
                     liked = true;
                 }
-                
             } catch (Exception e) {
-                Log.d("JSON Parser", "Error");
+                Log.d("JSON Parser", "Error" + e.getMessage());
             }
             refreshUI();
         }
@@ -447,6 +458,68 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
                 liked = false;
             }
             imgHeart.setEnabled(true);
+        }
+    } // Asynctask Send
+
+    // 동영상 삭제
+    class SendData4 extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String postParams = "id=" + strings[1];
+
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+                huc.setReadTimeout(5000);
+                huc.setConnectTimeout(5000);
+                huc.setRequestMethod("POST");
+                huc.connect();
+
+                OutputStream os = huc.getOutputStream();
+                os.write(postParams.getBytes("UTF-8"));
+                os.flush();
+                os.close();
+
+                int responseCode = huc.getResponseCode();
+                //Log.d("response", "code:" + responseCode);
+
+                InputStream is;
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    is = huc.getInputStream();
+                } else {
+                    is = huc.getErrorStream();
+                }
+
+                InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                br.close();
+                return sb.toString();
+            } catch (Exception e) {
+                return "Error: "+ e.getMessage();
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (s.substring(0, 5).equalsIgnoreCase("Error")) {
+                Toast.makeText(getApplicationContext(), "Error occured! Try agiain.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         }
     } // Asynctask Send
 }
