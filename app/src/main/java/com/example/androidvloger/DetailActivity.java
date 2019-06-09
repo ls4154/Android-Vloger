@@ -120,13 +120,13 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         return super.onOptionsItemSelected(item);
     }
 
-    void onClickPlay(View view) {
+    public void onClickPlay(View view) {
         Intent intent = new Intent(getBaseContext(), VideoActivity.class);
         intent.putExtra("id", videoId);
         startActivity(intent);
     }
 
-    void onclickHeart(View view){
+    public void onclickHeart(View view){
         if (uploaderId == null || uploaderId.equals(userId)) {
             Toast.makeText(getApplicationContext(), "It's your video :P", Toast.LENGTH_SHORT).show();
             return;
@@ -140,8 +140,8 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
             task.execute("http://" + IP_ADDR + "/unlike.php", videoId, userId);
         }
     }
-    
-    void onClickComment(View view) {
+
+    public void onClickComment(View view) {
         hideKeyboard(view);
         if (etComment.getText().equals("")) {
             Toast.makeText(getApplicationContext(), "Type comment first", Toast.LENGTH_SHORT).show();
@@ -165,7 +165,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         }
     }
 
-    void onclickGotoUserpage(View view){
+    public void onclickGotoUserpage(View view){
         Intent intent = new Intent(getBaseContext(), UserpageActivity.class);
         intent.putExtra("id", userId);
         String pageId = (String)view.getTag();

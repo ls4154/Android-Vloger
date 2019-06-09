@@ -137,7 +137,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
         recyclerView.setAdapter(adapter);
     }
 
-    void onclickFollow(View view){
+    public void onclickFollow(View view){
         if (userId.equals(pageId)) {
             Toast.makeText(getApplicationContext(), "It's you! :P", Toast.LENGTH_SHORT).show();
             return;

@@ -122,7 +122,7 @@ public class UserlistActivity extends AppCompatActivity {
         }
     } // Asynctask
 
-    void onclickSearch(View view){ // xml에 buttonSearch onclick으로 돼있음
+    public void onclickSearch(View view){ // xml에 buttonSearch onclick으로 돼있음
         hideKeyboard(view);
         searchResult = new ArrayList<>();
         String keyword = etSearch.getText().toString();
@@ -142,7 +142,7 @@ public class UserlistActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    void onclickGotoUserpage(View view){
+    public void onclickGotoUserpage(View view){
         Intent intent = new Intent(getBaseContext(), UserpageActivity.class);
         intent.putExtra("id", userId);
         String pageId = (String)view.getTag();

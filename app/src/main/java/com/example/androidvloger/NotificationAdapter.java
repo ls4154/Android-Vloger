@@ -38,7 +38,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         String content = "";
         if(item.type==0) content = "Comment : "+item.title;
         else if(item.type==1) content = "Upload : "+item.title;
-        else if(item.type==2) content = "Liked you";
+        else if(item.type==2) content = "Liked your video";
         else if(item.type==3) content = "Follows you";
         holder.tvContent.setText(content);
         

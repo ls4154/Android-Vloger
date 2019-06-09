@@ -80,7 +80,7 @@ public class FollowActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    void onclickGotoUserpage(View view){
+    public void onclickGotoUserpage(View view){
         Intent intent = new Intent(getBaseContext(), UserpageActivity.class);
         intent.putExtra("id", userId);
         String pageId = (String)view.getTag();
