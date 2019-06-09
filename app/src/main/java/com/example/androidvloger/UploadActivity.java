@@ -196,10 +196,13 @@ public class UploadActivity extends AppCompatActivity {
                 
                 bytesRead = fis.read(buffer, 0, bufferSize);
                 while (bytesRead > 0) {
+                    Log.d("upload", "byte write" + bufferSize);
                     os.write(buffer, 0, bufferSize);
                     bytesAvailable = fis.available();
                     bufferSize = Math.min(bytesAvailable, maxBufferSize);
                     bytesRead = fis.read(buffer, 0, bufferSize);
+                    Log.d("upload", "byte read" + bufferSize);
+
                 }
                 os.writeBytes(lineEnd);
                 
