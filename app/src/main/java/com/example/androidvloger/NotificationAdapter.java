@@ -36,10 +36,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         NotificationItem item = list.get(position);
         holder.tvUsername.setText(item.who);
         String content = "";
-        if(item.type==0) content = "댓글 : "+item.title;
-        else if(item.type==1) content = "영상 : "+item.title;
-        else if(item.type==2) content = "좋아요를 눌렀습니다";
-        else if(item.type==3) content = "팔로우했습니다";
+        if(item.type==0) content = "Comment : "+item.title;
+        else if(item.type==1) content = "Upload : "+item.title;
+        else if(item.type==2) content = "Liked you";
+        else if(item.type==3) content = "Follows you";
         holder.tvContent.setText(content);
         
         if (item.type == 3) {
