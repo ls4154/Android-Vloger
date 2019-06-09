@@ -44,11 +44,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         
         if (item.type == 3) {
             holder.imgThumbnail.setImageResource(R.drawable.ic_followers);
+            holder.constraintLayout.setTag(null);
         } else {
             String path = "http://" + IP_ADDR + "/thumb" + item.id + ".jpg";
             Picasso.get().load(path).into(holder.imgThumbnail);
+            holder.constraintLayout.setTag(item.id);
         }
-        holder.constraintLayout.setTag(item.id);
     }
 
     public class Holder extends RecyclerView.ViewHolder {
