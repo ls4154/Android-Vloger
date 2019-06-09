@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         getSupportActionBar().setTitle("Timeline");
         
-        refresh();
+        if (userId != null)
+            refresh();
     }
 
     @Override
