@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
+import android.view.View;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -26,6 +29,8 @@ public class FollowActivity extends AppCompatActivity {
     String pageId, pagename;
     TextView tvPageinfo;
     RecyclerView recyclerView;
+    ArrayList<Pair<String,String>> followList;
+    UserlistAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +49,34 @@ public class FollowActivity extends AppCompatActivity {
         if (type == 0) info = pagename + "'s followings";
         else if (type == 1) info = pagename + "'s followers";
         tvPageinfo.setText(info);
-        
+
+        refresh();
+    }
+
+    void refresh(){
         if (type == 0) {
             GetData task = new GetData();
-            task.execute("http://" + IP_ADDR + "/get_following.php");
+            task.execute("http://" + IP_ADDR + "/get_following.php", pageId);
         } else {
             GetData2 task = new GetData2();
-            task.execute("http://" + IP_ADDR + "/get_follower.php");
+            task.execute("http://" + IP_ADDR + "/get_follower.php", pageId);
         }
+    }
+
+    void refreshUI(){
+        adapter = new UserlistAdapter(followList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
+    void onclickGotoUserpage(View view){
+        Intent intent = new Intent(getBaseContext(), UserpageActivity.class);
+        intent.putExtra("id", userId);
+        String pageId = (String)view.getTag();
+        intent.putExtra("pageid", pageId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     // following 가져오기
@@ -111,12 +136,15 @@ public class FollowActivity extends AppCompatActivity {
                 JSONObject jo = new JSONObject(s);
                 JSONArray ja = jo.getJSONArray("followings");
                 
+                followList = new ArrayList<>();
                 for (int i = ja.length()-1; i >= 0; i--) {
-                    String[] t = new String[2];
-                    t[0] = ja.getJSONObject(i).getString("id"); // id
-                    t[1] = ja.getJSONObject(i).getString("name"); // 이름
-                    
+                    String t1 = ja.getJSONObject(i).getString("id"); // id
+                    String t2 = ja.getJSONObject(i).getString("name"); // 이름
+                    Pair<String, String> tempPair = new Pair<>(t1, t2);
+                    followList.add(tempPair); // id로 검색되게 하고 보이는건 id/name 둘다
                 }
+                refreshUI();
+
                 // 어댑터 추가
             } catch (Exception e) {
                 Log.d("JSON Parser", "Error" + e.getMessage());
@@ -182,12 +210,14 @@ public class FollowActivity extends AppCompatActivity {
                 JSONObject jo = new JSONObject(s);
                 JSONArray ja = jo.getJSONArray("followers");
 
+                followList = new ArrayList<>();
                 for (int i = ja.length()-1; i >= 0; i--) {
-                    String[] t = new String[2];
-                    t[0] = ja.getJSONObject(i).getString("id"); // id
-                    t[1] = ja.getJSONObject(i).getString("name"); // 이름
-
+                    String t1 = ja.getJSONObject(i).getString("id"); // id
+                    String t2 = ja.getJSONObject(i).getString("name"); // 이름
+                    Pair<String, String> tempPair = new Pair<>(t1, t2);
+                    followList.add(tempPair); // id로 검색되게 하고 보이는건 id/name 둘다
                 }
+                refreshUI();
                 // 어댑터 추가
             } catch (Exception e) {
                 Log.d("JSON Parser", "Error" + e.getMessage());

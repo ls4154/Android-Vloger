@@ -65,12 +65,19 @@ public class NotificationActivity extends AppCompatActivity implements SwipeRefr
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 3737) {
+            refresh();
+        }
+    }
 
     void refresh() {
         GetData getData = new GetData();
         getData.execute("http://" + IP_ADDR + "/get_notification.php", userId);
     }
-    
+
     void refreshUI() {
         adapter = new NotificationAdapter(notiList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -96,7 +103,7 @@ public class NotificationActivity extends AppCompatActivity implements SwipeRefr
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra("vidid",t);
         intent.putExtra("id", userId);
-        startActivity(intent);
+        startActivityForResult(intent, 3737);
     }
 
     class GetData extends AsyncTask<String, Void, String> {

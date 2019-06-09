@@ -76,6 +76,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
         // 본인 페이지면 팔로우 불가능 
         if (userId.equals(pageId)) {
             buttonFollow.setText("MyPage");
+            buttonFollow.setEnabled(false);
         }
 
         // 팔로잉수 팔로워수도 데베에서 읽어와서 처리하기
