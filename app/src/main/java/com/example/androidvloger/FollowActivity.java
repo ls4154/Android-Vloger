@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -50,7 +51,17 @@ public class FollowActivity extends AppCompatActivity {
         else if (type == 1) info = pagename + "'s followers";
         tvPageinfo.setText(info);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         refresh();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     void refresh(){

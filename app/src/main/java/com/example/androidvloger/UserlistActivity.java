@@ -47,6 +47,8 @@ public class UserlistActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        getSupportActionBar().setTitle("Find Friends");
+
         GetData getData = new GetData();
         getData.execute("http://" + IP_ADDR + "/getuser.php");
     }
