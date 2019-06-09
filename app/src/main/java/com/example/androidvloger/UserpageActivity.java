@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
@@ -72,7 +73,8 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
         userId = intent.getStringExtra("id"); // login user id
         pageId = intent.getStringExtra("pageid"); // page user id
         tvUsername.setText(pageId);
-        
+        tvUserDesc.setMovementMethod(new ScrollingMovementMethod());
+
         // 본인 페이지면 팔로우 불가능 
         if (userId.equals(pageId)) {
             buttonFollow.setText("MyPage");
