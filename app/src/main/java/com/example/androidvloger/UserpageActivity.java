@@ -325,7 +325,8 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
             } else {
                 buttonFollow.setText("Following");
                 Toast.makeText(getApplicationContext(), "Followed", Toast.LENGTH_SHORT).show();
-
+                following = true;
+                
             }
             buttonFollow.setEnabled(true);
         }
@@ -389,7 +390,7 @@ public class UserpageActivity extends AppCompatActivity implements SwipeRefreshL
             } else {
                 buttonFollow.setText("Follow");
                 Toast.makeText(getApplicationContext(), "Unfollowed", Toast.LENGTH_SHORT).show();
-
+                following = false;
             }
             buttonFollow.setEnabled(true);
         }

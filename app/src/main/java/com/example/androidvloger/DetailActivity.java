@@ -93,6 +93,8 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         // 댓글 가져오기
         refresh();
     }
+    
+    
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
