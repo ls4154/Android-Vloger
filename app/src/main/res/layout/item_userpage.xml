@@ -23,13 +23,13 @@
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="5dp"
 
         android:background="#80000000"
         android:gravity="center_horizontal"
         android:text="VideoTitleTitle..."
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
 
         app:layout_constraintBottom_toBottomOf="@id/imgThumbnail"
         app:layout_constraintEnd_toEndOf="@id/imgThumbnail"

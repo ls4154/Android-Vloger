@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,6 +83,7 @@ public class DetailActivity extends AppCompatActivity implements SwipeRefreshLay
         // 처음에 테스트용 텍스트 다 날리기
         tvTitle.setText("");
         tvDesc.setText("");
+        tvDesc.setMovementMethod(new ScrollingMovementMethod());
         tvUploadtime.setText("");
         tvUsername.setText("");
         tvHeartNum.setText("0 likes");
