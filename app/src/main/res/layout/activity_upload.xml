@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:ems="15"
             android:gravity="start|top"
-            android:hint="About video"
+            android:hint="\nAbout video"
+            android:minLines="2"
             android:inputType="textMultiLine" />
 
         <Button
