@@ -1,8 +1,8 @@
 Android Vloger
 ======
-SWE3047 Mobile Programming Practice
-Term Project
-2013311796, 2017313145
+SWE3047 Mobile Programming Practice  
+Term Project  
+2013311796, 2017313145  
 
 ## 사용방법
 * 일단 회원가입. 회원가입 하면 자동으로 로그인 됩니다.
