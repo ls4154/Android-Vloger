@@ -19,3 +19,6 @@ Term Project
 * 타임라인, 유저홈  
 ![preview 3](/3.png)
 ![preview 4](/4.png)
+
+## Credits
+Icons made by freepik from flaticon
